@@ -1,6 +1,5 @@
 package com.paulk.demo.utils;
 
-import com.paulk.demo.domain.Entry;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -41,7 +40,7 @@ public class StringBuilderUtilsTest {
         entries.add("Third");
 
         StringBuilderUtils.addFieldToBuilder(builder, "test", entries, false);
-        Assertions.assertEquals("\"test\":\"[First, Second, Third]\"", builder.toString());
+        Assertions.assertEquals("\"test\":[\"First\",\"Second\",\"Third\"]", builder.toString());
     }
 
     @Test
@@ -53,6 +52,6 @@ public class StringBuilderUtilsTest {
         entries.add("Third");
 
         StringBuilderUtils.addFieldToBuilder(builder, "test", entries, true);
-        Assertions.assertEquals("\"test\":\"[First, Second, Third]\",", builder.toString());
+        Assertions.assertEquals("\"test\":[\"First\",\"Second\",\"Third\"],", builder.toString());
     }
 }

@@ -1,6 +1,6 @@
 package com.paulk.demo.dao;
 
-import com.paulk.demo.domain.Entry;
+import com.paulk.demo.domain.model.Entry;
 
 import java.util.Collection;
 import java.util.Optional;

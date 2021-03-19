@@ -1,6 +1,6 @@
 package com.paulk.demo.dao;
 
-import com.paulk.demo.domain.Entry;
+import com.paulk.demo.domain.model.Entry;
 import com.paulk.demo.repository.EntryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.CrudRepository;

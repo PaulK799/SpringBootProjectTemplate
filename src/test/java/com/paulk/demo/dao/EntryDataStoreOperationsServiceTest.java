@@ -1,6 +1,6 @@
 package com.paulk.demo.dao;
 
-import com.paulk.demo.domain.Entry;
+import com.paulk.demo.domain.model.Entry;
 import com.paulk.demo.repository.EntryRepository;
 import com.paulk.demo.utils.SetComparisonUtils;
 import org.junit.jupiter.api.Assertions;
@@ -14,8 +14,6 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;

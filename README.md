@@ -9,7 +9,6 @@ The following setup has been implemented as part of the project:
 
 
 ---
-
 ## Redis Server Setup Docker Instance Installation
 
 The `SpringBootTemplate` is built on an implementation of `Redis` using `Spring Data`. If you do not have access to

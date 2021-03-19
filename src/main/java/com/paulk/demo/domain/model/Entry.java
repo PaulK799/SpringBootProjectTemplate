@@ -1,4 +1,4 @@
-package com.paulk.demo.domain;
+package com.paulk.demo.domain.model;
 
 import com.paulk.demo.DemoApplication;
 import com.paulk.demo.utils.StringBuilderUtils;
@@ -11,7 +11,7 @@ import java.util.Objects;
 /**
  * A POJO for representing information to be stored to a data store by the {@link DemoApplication}.
  */
-@RedisHash("Entry")
+@RedisHash("entries")
 public class Entry implements Serializable {
     private static final long serialVersionUID = 1L;
 

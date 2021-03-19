@@ -1,6 +1,6 @@
 package com.paulk.demo.repository;
 
-import com.paulk.demo.domain.Entry;
+import com.paulk.demo.domain.model.Entry;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
