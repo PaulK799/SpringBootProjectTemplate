@@ -30,8 +30,10 @@ public class EntryDataStoreOperationsService implements DataStoreOperations<Stri
     public boolean add(Entry entry) {
         Optional<Entry> entryOptional = get(entry);
         if (!entryOptional.isPresent()) {
-            entryRepository.save(entry);
-            return true;
+            entry = entryRepository.save(entry);
+            if (entry != null) {
+                return true;
+            }
         }
         return false;
     }
@@ -45,7 +47,7 @@ public class EntryDataStoreOperationsService implements DataStoreOperations<Stri
     @Override
     public boolean delete(Entry entry) {
         Optional<Entry> entryOptional = get(entry);
-        if (!entryOptional.isPresent()) {
+        if (entryOptional.isPresent()) {
             entryRepository.delete(entry);
             return true;
         }
@@ -59,13 +61,15 @@ public class EntryDataStoreOperationsService implements DataStoreOperations<Stri
      * @return If true, {@link Entry} added successfully, else {@link Entry} already exists.
      */
     @Override
-    public boolean update(String key, Entry entry) {
+    public Optional<Entry> update(String key, Entry entry) {
         Optional<Entry> entryOptional = get(entry);
         if (entryOptional.isPresent()) {
-            entryRepository.save(entry);
-            return true;
+            entry = entryRepository.save(entry);
+            if (entry != null) {
+                return Optional.of(entry);
+            }
         }
-        return false;
+        return Optional.empty();
     }
 
     /**
@@ -87,7 +91,7 @@ public class EntryDataStoreOperationsService implements DataStoreOperations<Stri
      * @return A {@link Collection} of all {@link Entry}.
      */
     @Override
-    public Collection<Entry> getAll() {
+    public Set<Entry> getAll() {
         Set<Entry> entries = new HashSet<>();
         Iterable<Entry> entryIterable = entryRepository.findAll();
         for (Entry entry : entryIterable) {

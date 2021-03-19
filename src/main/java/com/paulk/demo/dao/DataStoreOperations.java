@@ -4,6 +4,7 @@ import com.paulk.demo.domain.Entry;
 
 import java.util.Collection;
 import java.util.Optional;
+import java.util.Set;
 
 /**
  * An interface of {@link DataStoreOperations} for the application.
@@ -36,7 +37,7 @@ public interface DataStoreOperations<K, V> {
      * @param entry - The {@link V} to be updated.
      * @return If true, {@link V} removed successfully, else {@link V} doesn't exists.
      */
-    public boolean update(K key, V entry);
+    public Optional<V> update(K key, V entry);
 
     /**
      * Remove an {@link V} to the data store.
@@ -51,5 +52,5 @@ public interface DataStoreOperations<K, V> {
      *
      * @return A
      */
-    public Collection<V> getAll();
+    public Set<V> getAll();
 }
