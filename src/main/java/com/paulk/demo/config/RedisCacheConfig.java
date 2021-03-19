@@ -1,5 +1,6 @@
 package com.paulk.demo.config;
 
+import com.paulk.demo.DemoApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
@@ -7,6 +8,9 @@ import org.springframework.data.redis.connection.RedisPassword;
 import org.springframework.data.redis.connection.RedisStandaloneConfiguration;
 import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
 
+/**
+ * Configures the {@link RedisCacheConfig} from properties pulled from {@link DemoApplicationConfig}.
+ */
 @Configuration("CacheConfig")
 public class RedisCacheConfig implements CacheConfig {
 
@@ -22,6 +26,11 @@ public class RedisCacheConfig implements CacheConfig {
         this.demoApplicationConfig = demoApplicationConfig;
     }
 
+    /**
+     * Builds the {@link RedisConnectionFactory} for pulling configuration from the {@link DemoApplicationConfig}.
+     *
+     * @return The {@link RedisConnectionFactory} for the {@link DemoApplication}.
+     */
     @Bean
     @Override
     public RedisConnectionFactory getConnectionFactory() {
