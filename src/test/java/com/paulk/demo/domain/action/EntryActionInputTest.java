@@ -51,7 +51,7 @@ public class EntryActionInputTest {
      */
     @Test
     public void entryEqualsDifferentObjectsSuccess() {
-        Assertions.assertEquals(entryJohnLennon, altEntryActionInput, "Assert EntryActionInput equals successfully.");
+        Assertions.assertEquals(entryActionInput, altEntryActionInput, "Assert EntryActionInput equals successfully.");
     }
 
     /**
@@ -75,7 +75,7 @@ public class EntryActionInputTest {
      */
     @Test
     public void entryCompareHashCodeSuccess() {
-        Assertions.assertEquals(entryJohnLennon.hashCode(), altEntrySameKeyActionInput.hashCode(), "Assert EntryActionInput equals successfully.");
+        Assertions.assertEquals(entryActionInput.hashCode(), altEntryActionInput.hashCode(), "Assert EntryActionInput equals successfully.");
     }
 
     /**
@@ -83,7 +83,7 @@ public class EntryActionInputTest {
      */
     @Test
     public void entryCompareHashCodeInvalid() {
-        Assertions.assertNotEquals(entryJohnLennon.hashCode(), entryActionInput.hashCode(), "Assert EntryActionInput equals invalid.");
+        Assertions.assertNotEquals(entryActionInput.hashCode(), altEntrySameKeyActionInput.hashCode(), "Assert EntryActionInput equals invalid.");
     }
 
     /**
