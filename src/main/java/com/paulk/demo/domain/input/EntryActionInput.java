@@ -4,8 +4,6 @@ import com.paulk.demo.domain.model.Entry;
 import com.paulk.demo.utils.StringBuilderUtils;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Objects;
 
 /**

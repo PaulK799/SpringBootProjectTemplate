@@ -34,6 +34,18 @@ public class StringBuilderUtilsTest {
     }
 
     @Test
+    public void buildFromIntegerNoSeparatorSuccess() {
+        StringBuilderUtils.addFieldToBuilder(builder, "test", 5, false);
+        Assertions.assertEquals("\"test\":5", builder.toString());
+    }
+
+    @Test
+    public void buildFromIntegerAddSeparatorSuccess() {
+        StringBuilderUtils.addFieldToBuilder(builder, "test", 5, true);
+        Assertions.assertEquals("\"test\":5,", builder.toString());
+    }
+
+    @Test
     public void buildFromListNoSeparatorSuccess() {
         // Setup Test
         List<String>  entries = new ArrayList<>();
@@ -70,6 +82,18 @@ public class StringBuilderUtilsTest {
     }
 
     @Test
+    public void buildFromListIntegerNoSeparatorSuccess() {
+        // Setup Test
+        List<Integer>  entries = new ArrayList<>();
+        entries.add(2);
+        entries.add(1);
+        entries.add(3);
+
+        StringBuilderUtils.addFieldToBuilder(builder, "test", entries, false);
+        Assertions.assertEquals("\"test\":[2,1,3]", builder.toString());
+    }
+
+    @Test
     public void buildFromSetIntegerAddSeparatorSuccess() {
         // Setup Test
         Set<Integer> entries = new HashSet<>();
@@ -82,6 +106,19 @@ public class StringBuilderUtilsTest {
     }
 
     @Test
+    public void buildFromSetIntegerNoSeparatorSuccess() {
+        // Setup Test
+        Set<Integer> entries = new HashSet<>();
+        entries.add(2);
+        entries.add(1);
+        entries.add(3);
+
+        StringBuilderUtils.addFieldToBuilder(builder, "test", entries, false);
+        Assertions.assertEquals("\"test\":[1,2,3]", builder.toString());
+    }
+
+
+    @Test
     public void buildFromListBooleanAddSeparatorSuccess() {
         // Setup Test
         List<Boolean>  entries = new ArrayList<>();
@@ -91,5 +128,17 @@ public class StringBuilderUtilsTest {
 
         StringBuilderUtils.addFieldToBuilder(builder, "test", entries, true);
         Assertions.assertEquals("\"test\":[true,false,true],", builder.toString());
+    }
+
+    @Test
+    public void buildFromListBooleanNoSeparatorSuccess() {
+        // Setup Test
+        List<Boolean>  entries = new ArrayList<>();
+        entries.add(true);
+        entries.add(false);
+        entries.add(true);
+
+        StringBuilderUtils.addFieldToBuilder(builder, "test", entries, false);
+        Assertions.assertEquals("\"test\":[true,false,true]", builder.toString());
     }
 }

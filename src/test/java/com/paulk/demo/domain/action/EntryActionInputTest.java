@@ -59,7 +59,7 @@ public class EntryActionInputTest {
      */
     @Test
     public void entryEqualsInvalid() {
-        Assertions.assertNotEquals(entryJohnLennon, altEntryActionInput, "Assert EntryActionInput equals invalid.");
+        Assertions.assertNotEquals(entryActionInput, altEntrySameKeyActionInput, "Assert EntryActionInput equals invalid.");
     }
 
     /**
@@ -67,7 +67,39 @@ public class EntryActionInputTest {
      */
     @Test
     public void entryEqualsNullSuccess() {
-        Assertions.assertFalse(entryJohnLennon.equals(null), "Assert EntryActionInput equals null successfully.");
+        Assertions.assertFalse(entryActionInput.equals(null), "Assert EntryActionInput equals null successfully.");
+    }
+
+    /**
+     * Validates the comparison of two {@link EntryActionInput} objects.
+     */
+    @Test
+    public void entryKeyEqualsSuccess() {
+        Assertions.assertEquals(entryActionInput.getKey(), entryActionInput.getKey(), "Assert EntryActionInput getKey equals successfully.");
+    }
+
+    /**
+     * Validates the comparison of two {@link EntryActionInput} objects.
+     */
+    @Test
+    public void entryKeyEqualsDifferentObjectsSuccess() {
+        Assertions.assertEquals(entryActionInput.getKey(), altEntryActionInput.getKey(), "Assert EntryActionInput equals successfully.");
+    }
+
+    /**
+     * Validates the comparison of two {@link EntryActionInput} objects.
+     */
+    @Test
+    public void entryKeyEqualsInvalid() {
+        Assertions.assertNotEquals(entryActionInput.getKey(), altEntrySameKeyActionInput.getKey(), "Assert EntryActionInput equals invalid.");
+    }
+
+    /**
+     * Validates the comparison of two {@link EntryActionInput} objects.
+     */
+    @Test
+    public void entryKeyEqualsNullSuccess() {
+        Assertions.assertFalse(entryActionInput.getKey().equals(null), "Assert EntryActionInput equals null successfully.");
     }
 
     /**
