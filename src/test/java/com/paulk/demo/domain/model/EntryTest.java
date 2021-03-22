@@ -80,7 +80,7 @@ public class EntryTest {
      * Validates the comparison of two {@link Entry} objects.
      */
     @Test
-    public void entrygetValueSuccess() {
+    public void entryGetValueSuccess() {
         Assertions.assertEquals("Paul McCartney", entryPaulMcCartney.getValue(), "Assert Entry getValue equals successfully.");
     }
 
