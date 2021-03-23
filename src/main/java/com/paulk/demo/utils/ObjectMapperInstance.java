@@ -1,5 +1,8 @@
 package com.paulk.demo.utils;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
@@ -16,6 +19,8 @@ public enum ObjectMapperInstance {
      */
     private ObjectMapperInstance() {
         // Prevent direct access.
+        mapper.enable(DeserializationFeature.FAIL_ON_READING_DUP_TREE_KEY);
+        mapper.enable(DeserializationFeature.FAIL_ON_TRAILING_TOKENS);
     }
 
     /**
@@ -37,7 +42,7 @@ public enum ObjectMapperInstance {
         try {
             mapper.readTree(isJson);
             return true;
-        } catch (IOException e) {
+        } catch (JsonProcessingException e) {
             return false;
         }
     }
