@@ -1,6 +1,7 @@
 package com.paulk.demo.domain.model;
 
 import com.paulk.demo.constants.ErrorCodes;
+import com.paulk.demo.utils.ObjectMapperInstance;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -96,7 +97,7 @@ public class EntryResponseTest {
      */
     @Test
     public void toStringSuccess() {
-        Assertions.assertEquals("{\"entry\":{\"value\":\"John Lennon\"},\"error\":null}",
-                successResponse.toString(), "Assert toString method constructs Entry in the correct format.");
+        Assertions.assertTrue(ObjectMapperInstance.INSTANCE.isValidJson(successResponse.toString()),
+                "Assert toString method constructs valid json in the correct format.");
     }
 }

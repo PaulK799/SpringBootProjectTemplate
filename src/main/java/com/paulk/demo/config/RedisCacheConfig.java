@@ -17,7 +17,6 @@ public class RedisCacheConfig implements CacheConfig {
     private final DemoApplicationConfig demoApplicationConfig;
 
     /**
-     *
      * Constructor for {@link RedisCacheConfig}.
      *
      * @param demoApplicationConfig - The {@link DemoApplicationConfig} being processed.

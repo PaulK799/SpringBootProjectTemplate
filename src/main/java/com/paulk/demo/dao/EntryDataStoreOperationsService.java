@@ -48,8 +48,12 @@ public class EntryDataStoreOperationsService implements DataStoreOperations<Stri
     public boolean delete(Entry entry) {
         Optional<Entry> entryOptional = get(entry);
         if (entryOptional.isPresent()) {
-            entryRepository.delete(entry);
-            return true;
+            Entry retrievedEntry = entryOptional.get();
+
+            if (retrievedEntry.getId().equals(entry.getId())) {
+                entryRepository.delete(entryOptional.get());
+                return true;
+            }
         }
         return false;
     }
@@ -62,11 +66,17 @@ public class EntryDataStoreOperationsService implements DataStoreOperations<Stri
      */
     @Override
     public Optional<Entry> update(String key, Entry entry) {
-        Optional<Entry> entryOptional = get(entry);
-        if (entryOptional.isPresent()) {
-            entry = entryRepository.save(entry);
-            if (entry != null) {
-                return Optional.of(entry);
+        Entry searchEntry = new Entry(key, entry.getId());
+        Optional<Entry> retrievedEntryOpt = get(searchEntry);
+        if (retrievedEntryOpt.isPresent()) {
+            Entry retrievedEntry = retrievedEntryOpt.get();
+            if (retrievedEntry.getId().equals(entry.getId())) {
+                entryRepository.delete(retrievedEntry);
+                retrievedEntry.setValue(entry.getValue());
+                retrievedEntry = entryRepository.save(retrievedEntry);
+                if (retrievedEntry != null) {
+                    return Optional.of(retrievedEntry);
+                }
             }
         }
         return Optional.empty();

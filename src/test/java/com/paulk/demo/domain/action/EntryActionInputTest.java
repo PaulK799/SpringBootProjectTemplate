@@ -1,7 +1,9 @@
 package com.paulk.demo.domain.action;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.paulk.demo.domain.input.EntryActionInput;
 import com.paulk.demo.domain.model.Entry;
+import com.paulk.demo.utils.ObjectMapperInstance;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -131,7 +133,7 @@ public class EntryActionInputTest {
      */
     @Test
     public void toStringSuccess() {
-        Assertions.assertEquals("{\"key\":\"main\",\"entry\":{\"value\":\"John Lennon\"}}",
-                entryActionInput.toString(), "Assert toString method constructs Entry in the correct format.");
+        Assertions.assertTrue(ObjectMapperInstance.INSTANCE.isValidJson(entryActionInput.toString()),
+                "Assert toString method constructs a valid JSON object in the correct format.");
     }
 }

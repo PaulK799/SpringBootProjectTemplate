@@ -119,8 +119,8 @@ public class EntryDataStoreOperationsServiceTest {
     @Test
     public void updateEntrySuccess() {
         // 1. Setup test data.
-        Entry entry = new Entry("testValue");
-        Entry updatedEntry = new Entry("updatedValue");
+        Entry entry = new Entry("testValue","1234");
+        Entry updatedEntry = new Entry("updatedValue", "1234");
         // 2. Setup mocks.
         Mockito.when(entryRepository.findById(Mockito.any())).thenReturn(Optional.of(entry));
         Mockito.when(entryRepository.save(Mockito.any())).thenReturn(updatedEntry);

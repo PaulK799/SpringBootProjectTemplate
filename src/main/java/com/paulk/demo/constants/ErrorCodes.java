@@ -13,6 +13,9 @@ public class ErrorCodes {
     public static final String NOT_FOUND = "2";
     public static final String NOT_FOUND_DESCRIPTION = "Entry could not be found.";
 
+    public static final String NOT_VALID_FORMAT = "3";
+    public static final String NOT_VALID_FORMAT_DESCRIPTION = "The request body is missing or not well formed.";
+
     /**
      * Private constructor for the {@link ErrorCodes} class.
      */
