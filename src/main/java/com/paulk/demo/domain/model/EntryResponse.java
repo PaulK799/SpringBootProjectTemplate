@@ -1,6 +1,5 @@
 package com.paulk.demo.domain.model;
 
-import com.paulk.demo.constants.ErrorCodes;
 import com.paulk.demo.utils.StringBuilderUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

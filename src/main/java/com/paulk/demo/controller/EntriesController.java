@@ -151,7 +151,7 @@ public class EntriesController {
      * @return A {@link ResponseEntity} containing an {@link EntryResponse}. If successful an {@link Entry} returned, otherwise an {@link Error}.
      */
     @GetMapping("/entries/entry/{value}/id/{id}")
-    ResponseEntity<EntryResponse> getEntry(@PathVariable String value, @PathVariable String id, Model model) {
+    public ResponseEntity<EntryResponse> getEntry(@PathVariable String value, @PathVariable String id, Model model) {
         if (value != null && !value.equals(STRING_EMPTY) && id != null && !id.equals(STRING_EMPTY)) {
             // Setup
             EntryResponse entryResponse = new EntryResponse();
@@ -182,7 +182,7 @@ public class EntriesController {
      * @return A {@link ResponseEntity} containing an {@link EntriesResponse}. If successful an {@link Entry} returned, otherwise an {@link Error}.
      */
     @GetMapping("/entries")
-    ResponseEntity<EntriesResponse> getEntries(Model model) {
+    public ResponseEntity<EntriesResponse> getEntries(Model model) {
         // Setup
         EntriesResponse entriesResponse = new EntriesResponse();
         model.addAttribute(ENTRY_RESPONSE_ATTRIBUTE, entriesResponse);
