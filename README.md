@@ -63,7 +63,7 @@ curl --location --request POST 'http://localhost:8080/entries/entry' \
 
 The following response structure is expected for the add `Entry` operation.
 
-#### Success (HTTP Response: 201 Created)
+### Success (HTTP Response: 201 Created)
 
 The entry is returned to the user if added successfully.
 
@@ -78,7 +78,7 @@ Sample Successful Response:
 }
 ```
 
-#### Error (HTTP Response: 404 Not Found)
+### Error Scenarios
 
 An `Error` is returned to the user if the `Entry` was not added successfully.
 
@@ -143,9 +143,9 @@ curl --location --request DELETE 'http://localhost:8080/entries/entry' \
 
 ### Response
 
-The following response structure is expected for the add `Entry` operation.
+The following response structure is expected for the delete `Entry` operation.
 
-#### Success (HTTP Response: 200 Ok)
+### Success (HTTP Response: 200 Ok)
 
 The `Entry` which has been removed is returned to the user if deleted successfully.
 
@@ -160,9 +160,9 @@ Sample Successful Response:
 }
 ```
 
-#### Error (HTTP Response: 404 Not Found)
+### Error Scenarios
 
-An `Error` is returned to the user if the `Entry` was not added successfully.
+An `Error` is returned to the user if the `Entry` was not deleted successfully.
 
 **Error Codes:**
 
@@ -193,4 +193,217 @@ Sample Error Response (Bad Request - Not Well Formed)
 }
 ```
 
+---
+## Update Entry
+
+The update `Entry` operation is supported by the following Restful CRUD operation:
+> PUT /entries/entry
+
+### Request
+
+Request Body - An `EntryActionInput` object:
+```json
+{
+  "key":"Ringo Star",
+  "entry": {
+    "id": "aab81683-ce86-4954-9207-6094a1d82e7f",
+    "value": "Ringo Starr"
+  }
+}
+```
+
+Sample Request:
+```shell
+curl --location --request PUT 'http://localhost:8080/entries/entry' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+    "key":"Ringo Star",
+    "entry": {
+        "id": "aab81683-ce86-4954-9207-6094a1d82e7f",
+            "value": "Ringo Starr"
+    }
+}'
+```
+
+### Response
+
+The following response structure is expected for the update `Entry` operation.
+
+#### Success (HTTP Response: 200 Ok)
+
+The `Entry` which has been updated is returned to the user if updated successfully.
+
+Sample Successful Response:
+```json
+{
+  "entry": {
+    "id": "8bbdf639-942b-41ea-936f-4ddeea6601f5",
+    "value": "John Lennon"
+  },
+  "error": null
+}
+```
+
+### Error Scenarios
+
+An `Error` is returned to the user if the `Entry` was not updated successfully.
+
+**Error Codes:**
+
+| Error Code    | Error Description  | HTTP Code     |          
+| ------------- |-------------| -------------|
+| 2             | "Entry could not be found." | 404 |
+| 3             | "The request body is missing or not well formed." | 400 |
+
+Sample Error Response (HTTP Response 404 - Entry Not Found)
+```json
+{
+  "entry": null,
+  "error": {
+    "code": "2",
+    "description": "Entry could not be found."
+  }
+}
+```
+
+Sample Error Response (Bad Request - Not Well Formed)
+```json
+{
+  "entry": null,
+  "error": {
+    "code": "3",
+    "description": "The request body is missing or not well formed."
+  }
+}
+```
+
+---
+## Get Entry
+
+The get `Entry` operation is supported by the following Restful CRUD operation:
+> GET /entries/entry/{value}/id/{id}
+
+### Request
+Sample Request:
+```shell
+curl --location --request GET 'http://localhost:8080/entries/entry/John Lennon/id/ddabce27-f6a7-4860-8111-5728b5f4c915'
+```
+
+### Response
+
+The following response structure is expected for the get `Entry` operation.
+
+### Success (HTTP Response: 200 Ok)
+
+The `Entry` is returned to the user if found.
+
+Sample Successful Response:
+```json
+{
+  "entry": {
+    "id": "8bbdf639-942b-41ea-936f-4ddeea6601f5",
+    "value": "John Lennon"
+  },
+  "error": null
+}
+```
+
+### Error Scenarios
+
+An `Error` is returned to the user if the `Entry` was not found successfully.
+
+**Error Codes:**
+
+| Error Code    | Error Description  | HTTP Code     |          
+| ------------- |-------------| -------------|
+| 2             | "Entry could not be found." | 404 |
+| 3             | "The request body is missing or not well formed." | 400 |
+
+Sample Error Response (HTTP Response 404 - Entry Not Found)
+```json
+{
+  "entry": null,
+  "error": {
+    "code": "2",
+    "description": "Entry could not be found."
+  }
+}
+```
+
+Sample Error Response (Bad Request - Not Well Formed)
+```json
+{
+  "entry": null,
+  "error": {
+    "code": "3",
+    "description": "The request body is missing or not well formed."
+  }
+}
+```
+---
+
+## Get All Entries
+
+The get all `Entry` operation is supported by the following Restful CRUD operation:
+> GET /entries
+
+### Request
+Sample Request:
+```shell
+curl --location --request GET 'http://localhost:8080/entries/entry/John Lennon/id/ddabce27-f6a7-4860-8111-5728b5f4c915'
+```
+
+### Response
+
+The following response structure is expected for the get all `Entry` operation.
+
+### Success (HTTP Response: 200 Ok)
+
+An array of `Entry` is returned if more than one `Entry`is found.
+
+Sample Successful Response:
+```json
+{
+  "entries": [
+    {
+      "id": "d8f79374-b51c-47ef-9937-c44323d54183",
+      "value": "Paul McCartney"
+    },
+    {
+      "id": "aab81683-ce86-4954-9207-6094a1d82e7f",
+      "value": "Ringo Starr"
+    },
+    {
+      "id": "f0462965-4488-45f5-a52a-5b5bffc5fade",
+      "value": "George Harrison"
+    },
+    {
+      "id": "8bbdf639-942b-41ea-936f-4ddeea6601f5",
+      "value": "John Lennon"
+    }
+  ],
+  "error": null
+}
+```
+
+### Error Scenarios
+
+An `Error` is returned to the user if not a single `Entry` was found successfully.
+
+**Error Codes:**
+
+| Error Code    | Error Description  | HTTP Code     |          
+| ------------- |-------------| -------------|
+| 2             | "Entry could not be found." | 404 |
+
+Sample Error Response (HTTP Response 404 - Entry Not Found)
+```json
+{
+  "entry": null,
+  "error": {
+    "code": "2",
+    "description": "Entry could not be found."
+  }
+}
+```
 ---

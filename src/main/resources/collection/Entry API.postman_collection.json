@@ -1,0 +1,138 @@
+{
+	"info": {
+		"_postman_id": "ce3c105a-90f5-45c4-9a6e-c159245b2cd6",
+		"name": "Entry API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Add Entry",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"entry\": {\r\n        \"value\":\"George Harrison\"\r\n    }\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/entries/entry",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"entries",
+						"entry"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Entry",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"key\":\"Ringo Star\",\r\n    \"entry\": {\r\n        \"id\": \"aab81683-ce86-4954-9207-6094a1d82e7f\",\r\n            \"value\": \"Ringo Starr\"\r\n    }\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/entries/entry",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"entries",
+						"entry"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Entry",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"entry\": {\r\n        \"id\": \"ddabce27-f6a7-4860-8111-5728b5f4c915\",\r\n        \"value\": \"John Lennonn\"\r\n    },\r\n    \"error\": null\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/entries/entry",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"entries",
+						"entry"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Entry",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/entries/entry/John Lennon/id/f58b43d9-e3f2-47eb-a86d-cd02a3d363d5",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"entries",
+						"entry",
+						"John Lennon",
+						"id",
+						"f58b43d9-e3f2-47eb-a86d-cd02a3d363d5"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get All Entries",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/entries",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"entries"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
