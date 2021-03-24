@@ -51,6 +51,7 @@ updating the properties.
 # Zookeeper Configuration (Disabled by default)
 spring.cloud.zookeeper.enabled=true
 spring.cloud.zookeeper.discovery.enabled=true
+
 # Configure to your Zookeeper instance.
 spring.cloud.zookeeper.connect-string=localhost:2181
 ```
