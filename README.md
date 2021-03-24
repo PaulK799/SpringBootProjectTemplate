@@ -18,9 +18,39 @@ This can be rapidly be setup by utilising `Docker` to setup the `Redis`container
 
 Below you will find `Docker`commands for downloading and starting up a local `Redis` instance.
 
-```
+```shell
 > docker pull redis
 > docker run --name=redis-devel --publish=6379:6379 --hostname=redis --restart=on-failure --detach redis:latest
+```
+
+---
+
+## Zookeeper Server Setup Docker Instance Installation
+
+The `SpringBootTemplate` has in built with `Zookeeper`as a service discovery tool. If you do not have access to
+a `Zookeeper`server, please follow the steps as below for getting started quickly.
+
+For development purposes, this can be rapidly setup by utilizing `Docker` to setup the `Zookeeper`container.
+
+Below you will find `Docker` commands for downloading and starting up a local `Zookeeper`instance.
+
+```shell
+> docker run  zookeeper
+> docker run -p 2181:2181 --name local-zookeeper --restart always -d zookeeper
+```
+
+This will startup a `Zookeeper`instance in `Docker` on port `2181` for your local machine.
+
+By navigating to `src/main/resources/bootstrap.properties` you can enable and configure the `Zookeeper`server by
+updating the properties.
+
+```properties
+# Zookeeper Configuration (Disabled by default)
+spring.cloud.zookeeper.enabled=true
+spring.cloud.zookeeper.discovery.enabled=true
+
+# Configure to your Zookeeper instance.
+spring.cloud.zookeeper.connect-string=localhost:2181
 ```
 
 ---
@@ -40,6 +70,7 @@ The add `Entry` operation is supported by the following Restful CRUD operation:
 ### Request
 
 Request Body - An `EntryActionInput` object:
+
 ```json
 {
   "entry": {
@@ -49,6 +80,7 @@ Request Body - An `EntryActionInput` object:
 ```
 
 Sample Request:
+
 ```shell
 curl --location --request POST 'http://localhost:8080/entries/entry' \
 --header 'Content-Type: application/json' \
@@ -68,6 +100,7 @@ The following response structure is expected for the add `Entry` operation.
 The entry is returned to the user if added successfully.
 
 Sample Successful Response:
+
 ```json
 {
   "entry": {
@@ -90,6 +123,7 @@ An `Error` is returned to the user if the `Entry` was not added successfully.
 | 3             |  "The request body is missing or not well formed." | 400 |
 
 Sample Error Response (Entry Already exists)
+
 ```json
 {
   "entry": null,
@@ -101,6 +135,7 @@ Sample Error Response (Entry Already exists)
 ```
 
 Sample Error Response (Bad Request - Not Well Formed)
+
 ```json
 {
   "entry": null,
@@ -121,16 +156,18 @@ The delete `Entry` operation is supported by the following Restful CRUD operatio
 ### Request
 
 Request Body - An `EntryActionInput` object:
+
 ```json
 {
   "entry": {
     "id": "8bbdf639-942b-41ea-936f-4ddeea6601f5",
-    "value":"John Lennon"
+    "value": "John Lennon"
   }
 }
 ```
 
 Sample Request:
+
 ```shell
 curl --location --request DELETE 'http://localhost:8080/entries/entry' \
 --header 'Content-Type: application/json' \
@@ -150,6 +187,7 @@ The following response structure is expected for the delete `Entry` operation.
 The `Entry` which has been removed is returned to the user if deleted successfully.
 
 Sample Successful Response:
+
 ```json
 {
   "entry": {
@@ -172,6 +210,7 @@ An `Error` is returned to the user if the `Entry` was not deleted successfully.
 | 3             | "The request body is missing or not well formed." | 400 |
 
 Sample Error Response (HTTP Response 404 - Entry Not Found)
+
 ```json
 {
   "entry": null,
@@ -183,6 +222,7 @@ Sample Error Response (HTTP Response 404 - Entry Not Found)
 ```
 
 Sample Error Response (Bad Request - Not Well Formed)
+
 ```json
 {
   "entry": null,
@@ -194,6 +234,7 @@ Sample Error Response (Bad Request - Not Well Formed)
 ```
 
 ---
+
 ## Update Entry
 
 The update `Entry` operation is supported by the following Restful CRUD operation:
@@ -202,9 +243,10 @@ The update `Entry` operation is supported by the following Restful CRUD operatio
 ### Request
 
 Request Body - An `EntryActionInput` object:
+
 ```json
 {
-  "key":"Ringo Star",
+  "key": "Ringo Star",
   "entry": {
     "id": "aab81683-ce86-4954-9207-6094a1d82e7f",
     "value": "Ringo Starr"
@@ -213,6 +255,7 @@ Request Body - An `EntryActionInput` object:
 ```
 
 Sample Request:
+
 ```shell
 curl --location --request PUT 'http://localhost:8080/entries/entry' \
 --header 'Content-Type: application/json' \
@@ -234,6 +277,7 @@ The following response structure is expected for the update `Entry` operation.
 The `Entry` which has been updated is returned to the user if updated successfully.
 
 Sample Successful Response:
+
 ```json
 {
   "entry": {
@@ -256,6 +300,7 @@ An `Error` is returned to the user if the `Entry` was not updated successfully.
 | 3             | "The request body is missing or not well formed." | 400 |
 
 Sample Error Response (HTTP Response 404 - Entry Not Found)
+
 ```json
 {
   "entry": null,
@@ -267,6 +312,7 @@ Sample Error Response (HTTP Response 404 - Entry Not Found)
 ```
 
 Sample Error Response (Bad Request - Not Well Formed)
+
 ```json
 {
   "entry": null,
@@ -278,13 +324,16 @@ Sample Error Response (Bad Request - Not Well Formed)
 ```
 
 ---
+
 ## Get Entry
 
 The get `Entry` operation is supported by the following Restful CRUD operation:
 > GET /entries/entry/{value}/id/{id}
 
 ### Request
+
 Sample Request:
+
 ```shell
 curl --location --request GET 'http://localhost:8080/entries/entry/John Lennon/id/ddabce27-f6a7-4860-8111-5728b5f4c915'
 ```
@@ -298,6 +347,7 @@ The following response structure is expected for the get `Entry` operation.
 The `Entry` is returned to the user if found.
 
 Sample Successful Response:
+
 ```json
 {
   "entry": {
@@ -320,6 +370,7 @@ An `Error` is returned to the user if the `Entry` was not found successfully.
 | 3             | "The request body is missing or not well formed." | 400 |
 
 Sample Error Response (HTTP Response 404 - Entry Not Found)
+
 ```json
 {
   "entry": null,
@@ -331,6 +382,7 @@ Sample Error Response (HTTP Response 404 - Entry Not Found)
 ```
 
 Sample Error Response (Bad Request - Not Well Formed)
+
 ```json
 {
   "entry": null,
@@ -340,6 +392,7 @@ Sample Error Response (Bad Request - Not Well Formed)
   }
 }
 ```
+
 ---
 
 ## Get All Entries
@@ -348,7 +401,9 @@ The get all `Entry` operation is supported by the following Restful CRUD operati
 > GET /entries
 
 ### Request
+
 Sample Request:
+
 ```shell
 curl --location --request GET 'http://localhost:8080/entries/entry/John Lennon/id/ddabce27-f6a7-4860-8111-5728b5f4c915'
 ```
@@ -362,6 +417,7 @@ The following response structure is expected for the get all `Entry` operation.
 An array of `Entry` is returned if more than one `Entry`is found.
 
 Sample Successful Response:
+
 ```json
 {
   "entries": [
@@ -397,6 +453,7 @@ An `Error` is returned to the user if not a single `Entry` was found successfull
 | 2             | "Entry could not be found." | 404 |
 
 Sample Error Response (HTTP Response 404 - Entry Not Found)
+
 ```json
 {
   "entry": null,
@@ -406,4 +463,5 @@ Sample Error Response (HTTP Response 404 - Entry Not Found)
   }
 }
 ```
+
 ---
