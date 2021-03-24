@@ -5,7 +5,10 @@ having to reimplement the wheel for each and every project.
 
 The following setup has been implemented as part of the project:
 
-* Spring Data with a connection to `Redis`.
+* Spring Data integration with a connection to `Redis`.
+* Service Provider integrated with a service discovery node with `Apache Zookeeper`.
+* Basic RESTFul API implemented using basic `GET`, `POST`, `PUT` and `DELETE`operations for manipulating an `Entry` in a
+  data store.
 
 ---
 
@@ -48,7 +51,6 @@ updating the properties.
 # Zookeeper Configuration (Disabled by default)
 spring.cloud.zookeeper.enabled=true
 spring.cloud.zookeeper.discovery.enabled=true
-
 # Configure to your Zookeeper instance.
 spring.cloud.zookeeper.connect-string=localhost:2181
 ```
