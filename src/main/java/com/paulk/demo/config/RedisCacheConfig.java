@@ -6,7 +6,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.connection.RedisPassword;
 import org.springframework.data.redis.connection.RedisStandaloneConfiguration;
-import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
+import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
 
 /**
  * Configures the {@link RedisCacheConfig} from properties pulled from {@link DemoApplicationConfig}.
@@ -38,7 +38,6 @@ public class RedisCacheConfig implements CacheConfig {
 
         try {
             RedisStandaloneConfiguration redisProperties = new RedisStandaloneConfiguration();
-            factory = new JedisConnectionFactory(redisProperties);
 
             // Set Password
             if (redisPassword != null && !redisPassword.isEmpty()) {
@@ -53,6 +52,8 @@ public class RedisCacheConfig implements CacheConfig {
 
             // Set Port
             redisProperties.setPort(demoApplicationConfig.getPort());
+
+            factory = new LettuceConnectionFactory(redisProperties);
 
             return factory;
         } catch (Exception ex) {
