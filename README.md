@@ -81,8 +81,8 @@ For development purposes, this can be rapidly setup by utilizing `Docker` to set
 Below you will find `Docker` commands for downloading and starting up a local `Zookeeper`instance.
 
 ```shell
-> docker run  zookeeper
-> docker run -p 2181:2181 --name local-zookeeper --restart always -d zookeeper
+> docker pull zookeeper
+> docker run -it --name=local-zookeeper --publish 2181:2181 --hostname=zookeeper --restart=on-failure --detach zookeeper
 ```
 
 This will startup a `Zookeeper`instance in `Docker` on port `2181` for your local machine.
