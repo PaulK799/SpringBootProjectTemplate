@@ -1,0 +1,49 @@
+version: '2'
+services:
+  # =======================================
+  # Entry API (SpringBootProjectTemplate)
+  # =======================================
+  entryapi:
+    build:
+      context: .
+    depends_on:
+      - redis
+      - zookeeper
+    environment:
+      - _JAVA_OPTIONS=-Dspring.redis.host=redis -Dspring.cloud.zookeeper.connect-string=zookeeper:2181 -Dspring.cloud.zookeeper.enabled=true -Dspring.cloud.zookeeper.discovery.enabled=true
+    image: entryapi
+    ports:
+      - 8080:8080
+    links:
+      - "redis:localhost"
+      - "zookeeper:localhost"
+    networks:
+      - spring-template-network
+  # =======================================
+  # Redis Image
+  # =======================================
+  redis:
+    image: redis
+    ports:
+      - 6379:6379
+    volumes:
+      - ./redis:/data
+    networks:
+      - spring-template-network
+  # =======================================
+  # Apache Zookeeper image
+  # =======================================
+  zookeeper:
+    image: zookeeper
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+    ports:
+      - 2181:2181
+    networks:
+      - spring-template-network
+# =======================================
+# Get Network bridge
+# =======================================
+networks:
+  spring-template-network:
+    external: true

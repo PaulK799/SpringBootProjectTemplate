@@ -12,7 +12,50 @@ The following setup has been implemented as part of the project:
 
 ---
 
-## Redis Server Setup Docker Instance Installation
+# Docker Instance Setup
+## Create Docker Image of EntryAPI
+1. First you need to generate a jar of the latest version of the application. This can be done via maven with the following
+command:
+
+```shell
+> ./mvnw clean package
+```
+
+2. Verify the jar starts up correctly
+
+```shell
+> java -jar target/demo<insert version>.jar
+```
+
+Example: `java -jar target/demo-0.0.1-SNAPSHOT.jar`.
+
+3. Create the `Docker` Image
+
+```shell
+> docker build --tag=entryapi .
+```
+
+4. Compose `Docker` container
+```shell
+> docker-compose up
+```
+
+5. Verify `Docker` containers are up and running
+
+```shell
+> docker ps -a
+```
+
+Expected output should be as follows:
+```shell
+CONTAINER ID   IMAGE              COMMAND                  CREATED          STATUS                        PORTS                                                  NAMES                                
+dfb6238f2e4b   entryapi           "java -jar demo-0.0.…"   29 minutes ago   Up 9 seconds                  0.0.0.0:8080->8080/tcp                                 springbootprojecttemplate_entryapi_1
+505a08a4b9c6   zookeeper          "/docker-entrypoint.…"   29 minutes ago   Up 9 seconds                  2888/tcp, 3888/tcp, 0.0.0.0:2181->2181/tcp, 8080/tcp   springbootprojecttemplate_zookeeper_1
+db090e0b45a0   redis              "docker-entrypoint.s…"   29 minutes ago   Up 9 seconds                  0.0.0.0:6379->6379/tcp                                 springbootprojecttemplate_redis_1
+```
+
+
+## Standalone Redis Server Setup Docker Instance Installation
 
 The `SpringBootTemplate` is built on an implementation of `Redis` using `Spring Data`. If you do not have access to
 a `Redis`server, please follow the steps as below for getting started quickly.
@@ -28,7 +71,7 @@ Below you will find `Docker`commands for downloading and starting up a local `Re
 
 ---
 
-## Zookeeper Server Setup Docker Instance Installation
+## Standalone Zookeeper Server Setup Docker Instance Installation
 
 The `SpringBootTemplate` has in built with `Zookeeper`as a service discovery tool. If you do not have access to
 a `Zookeeper`server, please follow the steps as below for getting started quickly.
@@ -51,7 +94,6 @@ updating the properties.
 # Zookeeper Configuration (Disabled by default)
 spring.cloud.zookeeper.enabled=true
 spring.cloud.zookeeper.discovery.enabled=true
-
 # Configure to your Zookeeper instance.
 spring.cloud.zookeeper.connect-string=localhost:2181
 ```
