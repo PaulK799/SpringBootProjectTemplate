@@ -86,12 +86,18 @@ Example: `java -jar target/demo-0.0.1-SNAPSHOT.jar`.
 > docker pull zookeeper 
 ```
 
-4. Compose `Docker` container
+5. Create `Docker` network bridge
+
+``` shell
+> docker network create -d bridge spring-template-network
+```
+   
+6. Compose `Docker` container
 ```shell
 > docker-compose up
 ```
 
-5. Verify `Docker` containers are up and running
+7. Verify `Docker` containers are up and running
 
 ```shell
 > docker ps -a
