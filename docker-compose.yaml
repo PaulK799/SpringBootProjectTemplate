@@ -10,7 +10,7 @@ services:
       - redis
       - zookeeper
     environment:
-      - _JAVA_OPTIONS=-Dspring.redis.host=redis -Dspring.cloud.zookeeper.connect-string=zookeeper:2181 -Dspring.cloud.zookeeper.enabled=true -Dspring.cloud.zookeeper.discovery.enabled=true
+      - _JAVA_OPTIONS=-Dspring.redis.host=redis -Dspring.cloud.zookeeper.connect-string=zookeeper:2181 -Dspring.cloud.zookeeper.enabled=true -Dspring.cloud.zookeeper.discovery.enabled=true -Dspring.rabbitmq.host=rabbitmq
     image: entryapi
     ports:
       - 8080:8080

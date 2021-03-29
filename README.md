@@ -9,6 +9,7 @@ The following setup has been implemented as part of the project:
 * Service Provider integrated with a service discovery node with `Apache Zookeeper`.
 * Basic RESTFul API implemented using basic `GET`, `POST`, `PUT` and `DELETE`operations for manipulating an `Entry` in a
   data store.
+* Queue consumer service for processing queued messages via `RabitMQ`.
 
 ---
 
@@ -57,10 +58,41 @@ spring.cloud.zookeeper.connect-string=localhost:2181
 
 ---
 
+## Development RabbitMQ Server Setup Docker Instance Installation
+
+The `SpringBootTemplate` has in built with `RabbitMQ`as the framework for implementing a a message broker protocol
+system. If you do not have access to a `RabbitMQ`server, please follow the steps as below for getting started quickly.
+
+For development purposes, this can be rapidly setup by utilizing `Docker` to setup the `RabbitMQ`container.
+
+Below you will find `Docker` commands for downloading and starting up a local `RabbitMQ`instance.
+
+```shell
+> docker pull rabbitmq
+> docker run -it --name=local-rabbitmq --publish 5672:5672,15672:15672 --hostname=rabbitmq --restart=on-failure --detach rabbitmq:3-management-alpine
+```
+
+This will startup a `RabbitMQ`instance in `Docker` on port `5672` with the management console on `15672` for your local machine.
+
+By navigating to `src/main/resources/bootstrap.properties` you can configure the `RabbitMQ`server by
+updating the properties.
+
+```properties
+# RabbitMQ
+spring.rabbitmq.host=localhost
+spring.rabbitmq.port=5672
+spring.rabbitmq.username=guest
+spring.rabbitmq.password=guest
+```
+
+---
+
 # Dockerize the EntryAPI into a Docker Container
+
 ## Create Docker Image of EntryAPI
-1. First you need to generate a jar of the latest version of the application. This can be done via maven with the following
-   command:
+
+1. First you need to generate a jar of the latest version of the application. This can be done via maven with the
+   following command:
 
 ```shell
 > ./mvnw clean package
@@ -81,9 +113,11 @@ Example: `java -jar target/demo-0.0.1-SNAPSHOT.jar`.
 ```
 
 4. Pull down additional docker images from the `Docker` hub.
+
 ```shell
 > docker pull redis
 > docker pull zookeeper 
+> docker pull rabbitmq
 ```
 
 5. Create `Docker` network bridge
@@ -91,8 +125,9 @@ Example: `java -jar target/demo-0.0.1-SNAPSHOT.jar`.
 ``` shell
 > docker network create -d bridge spring-template-network
 ```
-   
+
 6. Compose `Docker` container
+
 ```shell
 > docker-compose up
 ```
@@ -104,13 +139,13 @@ Example: `java -jar target/demo-0.0.1-SNAPSHOT.jar`.
 ```
 
 Expected output should be as follows:
+
 ```shell
 CONTAINER ID   IMAGE              COMMAND                  CREATED          STATUS                        PORTS                                                  NAMES                                
 dfb6238f2e4b   entryapi           "java -jar demo-0.0.…"   29 minutes ago   Up 9 seconds                  0.0.0.0:8080->8080/tcp                                 springbootprojecttemplate_entryapi_1
 505a08a4b9c6   zookeeper          "/docker-entrypoint.…"   29 minutes ago   Up 9 seconds                  2888/tcp, 3888/tcp, 0.0.0.0:2181->2181/tcp, 8080/tcp   springbootprojecttemplate_zookeeper_1
 db090e0b45a0   redis              "docker-entrypoint.s…"   29 minutes ago   Up 9 seconds                  0.0.0.0:6379->6379/tcp                                 springbootprojecttemplate_redis_1
 ```
-
 
 # Entry API
 
