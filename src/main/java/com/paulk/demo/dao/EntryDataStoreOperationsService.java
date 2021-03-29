@@ -2,10 +2,14 @@ package com.paulk.demo.dao;
 
 import com.paulk.demo.domain.model.Entry;
 import com.paulk.demo.repository.EntryRepository;
+import com.paulk.demo.utils.EntryWrapperContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Optional;
@@ -19,6 +23,9 @@ public class EntryDataStoreOperationsService implements DataStoreOperations<Stri
 
     @Autowired
     private EntryRepository entryRepository;
+
+    @Autowired
+    private EntryWrapperContext entryWrapperContext;
 
     /**
      * Add an {@link Entry} to the data store.
@@ -49,6 +56,7 @@ public class EntryDataStoreOperationsService implements DataStoreOperations<Stri
         Optional<Entry> entryOptional = get(entry);
         if (entryOptional.isPresent()) {
             Entry retrievedEntry = entryOptional.get();
+            entryWrapperContext.setEntry(retrievedEntry);
 
             if (retrievedEntry.getId().equals(entry.getId())) {
                 entryRepository.delete(entryOptional.get());
@@ -72,7 +80,15 @@ public class EntryDataStoreOperationsService implements DataStoreOperations<Stri
             Entry retrievedEntry = retrievedEntryOpt.get();
             if (retrievedEntry.getId().equals(entry.getId())) {
                 entryRepository.delete(retrievedEntry);
+
+                // Update the Value
                 retrievedEntry.setValue(entry.getValue());
+
+                // Update the Modified Date Time
+                LocalDateTime modifiedDateTime = LocalDateTime.now(ZoneId.of(ZoneOffset.UTC.toString()));
+                retrievedEntry.setLastModifiedDateTime(modifiedDateTime);
+                retrievedEntry.setAuditId(retrievedEntry.getAuditId() + 1);
+
                 retrievedEntry = entryRepository.save(retrievedEntry);
                 if (retrievedEntry != null) {
                     return Optional.of(retrievedEntry);

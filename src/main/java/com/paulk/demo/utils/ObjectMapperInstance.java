@@ -3,6 +3,8 @@ package com.paulk.demo.utils;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * The singleton pattern {@link ObjectMapperInstance}.
@@ -10,6 +12,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 public enum ObjectMapperInstance {
     INSTANCE;
     private final ObjectMapper mapper = new ObjectMapper();
+    private static final Logger LOGGER = LoggerFactory.getLogger(ObjectMapperInstance.class);
 
     /**
      * Constructor for {@link ObjectMapperInstance}.
@@ -40,6 +43,7 @@ public enum ObjectMapperInstance {
             mapper.readTree(isJson);
             return true;
         } catch (JsonProcessingException e) {
+            LOGGER.error("Invalid Json: {}", isJson);
             return false;
         }
     }

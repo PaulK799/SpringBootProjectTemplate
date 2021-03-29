@@ -3,6 +3,7 @@ package com.paulk.demo.service;
 import com.paulk.demo.dao.EntryDataStoreOperationsService;
 import com.paulk.demo.domain.input.EntryActionInput;
 import com.paulk.demo.domain.model.Entry;
+import com.paulk.demo.utils.EntryWrapperContext;
 import com.paulk.demo.utils.SetComparisonUtils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -12,6 +13,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import org.mockito.Spy;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
@@ -28,6 +30,9 @@ public class EntryActionServiceTest {
 
     @Mock
     EntryDataStoreOperationsService entryDataStoreOperationsService;
+
+    @Spy
+    private EntryWrapperContext entryWrapperContext;
 
     @InjectMocks
     EntryActionService entryActionService;

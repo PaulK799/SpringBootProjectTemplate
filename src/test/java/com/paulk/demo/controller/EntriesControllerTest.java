@@ -3,6 +3,7 @@ package com.paulk.demo.controller;
 import com.paulk.demo.domain.input.EntryActionInput;
 import com.paulk.demo.domain.model.Entry;
 import com.paulk.demo.service.EntryActionService;
+import com.paulk.demo.utils.EntryWrapperContext;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -10,6 +11,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import org.mockito.Spy;
 import org.mockito.internal.util.collections.Sets;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -39,6 +41,9 @@ public class EntriesControllerTest {
 
     @Mock
     private EntryActionService actionService;
+
+    @Spy
+    private EntryWrapperContext entryWrapperContext;
 
     @InjectMocks
     private EntriesController entriesController;

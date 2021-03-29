@@ -1,5 +1,6 @@
 package com.paulk.demo.utils;
 
+import java.time.LocalDateTime;
 import java.util.Collection;
 
 /**
@@ -26,6 +27,28 @@ public class StringBuilderUtils {
      * @param addSeparator - If true, a separator of "," is added.
      */
     public static void addFieldToBuilder(StringBuilder builder, String field, String object, boolean addSeparator) {
+        builder.append(DOUBLE_QUOTE);
+        builder.append(field);
+        builder.append(DOUBLE_QUOTE);
+        builder.append(COLON);
+        builder.append(DOUBLE_QUOTE);
+        builder.append(object);
+        builder.append(DOUBLE_QUOTE);
+
+        if (addSeparator) {
+            builder.append(COMMA);
+        }
+    }
+
+    /**
+     * Adds an {@link Object} to the {@link StringBuilder}.
+     *
+     * @param builder      - The {@link StringBuilder} to be appended to.
+     * @param field        - The {@link String} to be added.
+     * @param object       - The {@link LocalDateTime} to be added.
+     * @param addSeparator - If true, a separator of "," is added.
+     */
+    public static void addFieldToBuilder(StringBuilder builder, String field, LocalDateTime object, boolean addSeparator) {
         builder.append(DOUBLE_QUOTE);
         builder.append(field);
         builder.append(DOUBLE_QUOTE);
@@ -92,7 +115,7 @@ public class StringBuilderUtils {
         int index = 0;
         int size = object.size() - 1;
         for (T value : object) {
-            if (value instanceof String) {
+            if (value instanceof String || value instanceof LocalDateTime) {
                 builder.append(DOUBLE_QUOTE);
                 builder.append(value);
                 builder.append(DOUBLE_QUOTE);

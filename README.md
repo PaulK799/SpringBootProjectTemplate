@@ -72,10 +72,11 @@ Below you will find `Docker` commands for downloading and starting up a local `R
 > docker run -it --name=local-rabbitmq --publish 5672:5672,15672:15672 --hostname=rabbitmq --restart=on-failure --detach rabbitmq:3-management-alpine
 ```
 
-This will startup a `RabbitMQ`instance in `Docker` on port `5672` with the management console on `15672` for your local machine.
+This will startup a `RabbitMQ`instance in `Docker` on port `5672` with the management console on `15672` for your local
+machine. You can hit `http://localhost:15672/` to verify the management console started up correctly.
 
-By navigating to `src/main/resources/bootstrap.properties` you can configure the `RabbitMQ`server by
-updating the properties.
+By navigating to `src/main/resources/bootstrap.properties` you can configure the `RabbitMQ`server by updating the
+properties.
 
 ```properties
 # RabbitMQ
@@ -197,7 +198,10 @@ Sample Successful Response:
 {
   "entry": {
     "id": "8bbdf639-942b-41ea-936f-4ddeea6601f5",
-    "value": "John Lennon"
+    "value": "John Lennon",
+    "createdDateTime": "2021-03-29T14:48:50.256",
+    "lastModifiedDateTime": "2021-03-29T14:48:50.256",
+    "auditId": 1
   },
   "error": null
 }
@@ -265,7 +269,7 @@ curl --location --request DELETE 'http://localhost:8080/entries/entry' \
 --header 'Content-Type: application/json' \
 --data-raw '{
     "entry": {
-        "value":"John Lennon"
+        "value":"John Lennon",
     }
 }'
 ```
@@ -284,7 +288,10 @@ Sample Successful Response:
 {
   "entry": {
     "id": "8bbdf639-942b-41ea-936f-4ddeea6601f5",
-    "value": "John Lennon"
+    "value": "John Lennon",
+    "createdDateTime": "2021-03-29T14:48:50.256",
+    "lastModifiedDateTime": "2021-03-29T14:48:50.256",
+    "auditId": 1
   },
   "error": null
 }
@@ -374,7 +381,10 @@ Sample Successful Response:
 {
   "entry": {
     "id": "8bbdf639-942b-41ea-936f-4ddeea6601f5",
-    "value": "John Lennon"
+    "value": "John Lennon",
+    "createdDateTime": "2021-03-29T14:48:50.256",
+    "lastModifiedDateTime": "2021-03-29T14:49:50.256",
+    "auditId": 2
   },
   "error": null
 }
@@ -515,19 +525,31 @@ Sample Successful Response:
   "entries": [
     {
       "id": "d8f79374-b51c-47ef-9937-c44323d54183",
-      "value": "Paul McCartney"
+      "value": "Paul McCartney",
+      "createdDateTime": "2021-03-29T14:48:50.256",
+      "lastModifiedDateTime": "2021-03-29T14:48:50.256",
+      "auditId": 1
     },
     {
       "id": "aab81683-ce86-4954-9207-6094a1d82e7f",
-      "value": "Ringo Starr"
+      "value": "Ringo Starr",
+      "createdDateTime": "2021-03-29T14:48:50.256",
+      "lastModifiedDateTime": "2021-03-29T14:49:50.256",
+      "auditId": 2
     },
     {
       "id": "f0462965-4488-45f5-a52a-5b5bffc5fade",
-      "value": "George Harrison"
+      "value": "George Harrison",
+      "createdDateTime": "2021-03-29T14:48:50.256",
+      "lastModifiedDateTime": "2021-03-29T14:48:50.256",
+      "auditId": 1
     },
     {
       "id": "8bbdf639-942b-41ea-936f-4ddeea6601f5",
-      "value": "John Lennon"
+      "value": "John Lennon",
+      "createdDateTime": "2021-03-29T14:48:50.256",
+      "lastModifiedDateTime": "2021-03-29T14:48:50.256",
+      "auditId": 1
     }
   ],
   "error": null

@@ -7,6 +7,7 @@ import com.paulk.demo.domain.model.Entry;
 import com.paulk.demo.domain.model.EntryResponse;
 import com.paulk.demo.domain.model.Error;
 import com.paulk.demo.service.EntryActionService;
+import com.paulk.demo.utils.EntryWrapperContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -34,6 +35,9 @@ public class EntriesController {
 
     @Autowired
     protected EntryActionService entryActionService;
+
+    @Autowired
+    private EntryWrapperContext entryWrapperContext;
 
 
     /**
@@ -96,7 +100,12 @@ public class EntriesController {
 
             if (isSuccess) {
                 // Delete the Entry
-                entryResponse.setEntry(actionInput.getEntry());
+                Entry retrievedEntry = entryWrapperContext.getEntry();
+                if (retrievedEntry != null) {
+                    entryResponse.setEntry(retrievedEntry);
+                } else {
+                    entryResponse.setEntry(entryOptional.get());
+                }
                 return new ResponseEntity<>(entryResponse, HttpStatus.OK);
             } else {
                 // Add in error to indicate Entry could not be added successfully.
@@ -130,7 +139,7 @@ public class EntriesController {
 
             if (entryOptional.isPresent()) {
                 // Add the added Entry
-                entryResponse.setEntry(actionInput.getEntry());
+                entryResponse.setEntry(entryOptional.get());
                 return new ResponseEntity<>(entryResponse, HttpStatus.OK);
             } else {
                 // Add in error to indicate Entry could not be added successfully.
