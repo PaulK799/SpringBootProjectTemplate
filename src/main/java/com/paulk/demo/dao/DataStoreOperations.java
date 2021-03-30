@@ -1,6 +1,10 @@
 package com.paulk.demo.dao;
 
 import com.paulk.demo.domain.model.Entry;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 
 import java.util.Collection;
 import java.util.Optional;
@@ -12,6 +16,7 @@ import java.util.Set;
  * @param <K> - The key of the {@link V} being processed.
  * @param <V> - The {@link V} to be stored in the data store.
  */
+@CacheConfig(cacheNames = {"entries"})
 public interface DataStoreOperations<K, V> {
 
     /**
@@ -20,6 +25,7 @@ public interface DataStoreOperations<K, V> {
      * @param entry - The {@link V} to be added.
      * @return If true, {@link V} added successfully, else {@link V} already exists.
      */
+    @CacheEvict(value = "entries", allEntries = true)
     public boolean add(Entry entry);
 
     /**
@@ -28,6 +34,7 @@ public interface DataStoreOperations<K, V> {
      * @param entry - The {@link V} to be deleted.
      * @return If true, {@link V} removed successfully, else {@link V} doesn't exists.
      */
+    @CacheEvict(value = "entries", allEntries = true)
     public boolean delete(V entry);
 
     /**
@@ -37,6 +44,7 @@ public interface DataStoreOperations<K, V> {
      * @param entry - The {@link V} to be updated.
      * @return If true, {@link V} removed successfully, else {@link V} doesn't exists.
      */
+    @CacheEvict(value = "entries", allEntries = true)
     public Optional<V> update(K key, V entry);
 
     /**
@@ -45,6 +53,7 @@ public interface DataStoreOperations<K, V> {
      * @param entry - The {@link V} to be retrieved.
      * @return An {@link Optional} element of type {@link V}.
      */
+    @Cacheable("entries")
     public Optional<V> get(V entry);
 
     /**
@@ -52,5 +61,6 @@ public interface DataStoreOperations<K, V> {
      *
      * @return A
      */
+    @Cacheable("entries")
     public Set<V> getAll();
 }

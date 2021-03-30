@@ -1,5 +1,6 @@
 package com.paulk.demo.service;
 
+import com.paulk.demo.dao.DataStoreOperations;
 import com.paulk.demo.dao.EntryDataStoreOperationsService;
 import com.paulk.demo.domain.input.EntryActionInput;
 import com.paulk.demo.domain.model.Entry;
@@ -16,7 +17,7 @@ import java.util.Set;
 public class EntryActionService {
 
     @Autowired
-    protected EntryDataStoreOperationsService entryDataStoreOperationsService;
+    protected DataStoreOperations<String, Entry> entryDataStoreOperationsService;
 
     /**
      * Method for performing the {@link EntryDataStoreOperationsService#add(Entry)} operation.

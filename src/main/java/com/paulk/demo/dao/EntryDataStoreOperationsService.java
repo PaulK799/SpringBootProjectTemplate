@@ -4,6 +4,9 @@ import com.paulk.demo.domain.model.Entry;
 import com.paulk.demo.repository.EntryRepository;
 import com.paulk.demo.utils.EntryWrapperContext;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Component;
 
@@ -19,6 +22,7 @@ import java.util.Set;
  * A {@link Component} for performing {@link CrudRepository} operations via {@link EntryRepository} using an {@link Entry} object.
  */
 @Component
+@CacheConfig(cacheNames = {"entries"})
 public class EntryDataStoreOperationsService implements DataStoreOperations<String, Entry> {
 
     @Autowired
@@ -34,6 +38,7 @@ public class EntryDataStoreOperationsService implements DataStoreOperations<Stri
      * @return If true, {@link Entry} added successfully, else {@link Entry} already exists.
      */
     @Override
+    @CacheEvict(value = "entries", allEntries = true)
     public boolean add(Entry entry) {
         Optional<Entry> entryOptional = get(entry);
         if (!entryOptional.isPresent()) {
@@ -52,6 +57,7 @@ public class EntryDataStoreOperationsService implements DataStoreOperations<Stri
      * @return If true, {@link Entry} removed successfully, else {@link Entry} doesn't exists.
      */
     @Override
+    @CacheEvict(value = "entries", allEntries = true)
     public boolean delete(Entry entry) {
         Optional<Entry> entryOptional = get(entry);
         if (entryOptional.isPresent()) {
@@ -73,6 +79,7 @@ public class EntryDataStoreOperationsService implements DataStoreOperations<Stri
      * @return If true, {@link Entry} added successfully, else {@link Entry} already exists.
      */
     @Override
+    @CacheEvict(value = "entries", allEntries = true)
     public Optional<Entry> update(String key, Entry entry) {
         Entry searchEntry = new Entry(key, entry.getId());
         Optional<Entry> retrievedEntryOpt = get(searchEntry);
@@ -105,6 +112,7 @@ public class EntryDataStoreOperationsService implements DataStoreOperations<Stri
      * @return An {@link Optional} element of type {@link Entry}.
      */
     @Override
+    @Cacheable("entries")
     public Optional<Entry> get(Entry entry) {
         Optional<String> valueOptional = Optional.ofNullable(entry)
                 .map(Entry::getValue);
@@ -117,6 +125,7 @@ public class EntryDataStoreOperationsService implements DataStoreOperations<Stri
      * @return A {@link Collection} of all {@link Entry}.
      */
     @Override
+    @Cacheable("entries")
     public Set<Entry> getAll() {
         Set<Entry> entries = new HashSet<>();
         Iterable<Entry> entryIterable = entryRepository.findAll();
