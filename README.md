@@ -402,11 +402,23 @@ Sample Successful Response:
 ```json
 {
   "entry": {
-    "id": "8bbdf639-942b-41ea-936f-4ddeea6601f5",
-    "value": "John Lennon",
-    "createdDateTime": "2021-03-29T14:48:50.256",
-    "lastModifiedDateTime": "2021-03-29T14:49:50.256",
-    "auditId": 2
+    "id": "47f268bd-0d95-480b-8261-bb436e6ed96c",
+    "value": "Ringo Star",
+    "audits": {
+      "auditList": [
+        {
+          "timestamp": "2021-03-30T13:02:04.119",
+          "auditId": 1,
+          "action": "Add"
+        },
+        {
+          "timestamp": "2021-03-30T13:02:16.678",
+          "auditId": 2,
+          "action": "Update"
+        }
+      ],
+      "nextAuditId": 3
+    }
   },
   "error": null
 }
