@@ -3,6 +3,8 @@ package com.paulk.demo.dao;
 import com.paulk.demo.domain.model.Entry;
 import com.paulk.demo.repository.EntryRepository;
 import com.paulk.demo.utils.EntryWrapperContext;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CacheEvict;
@@ -25,6 +27,8 @@ import java.util.Set;
 @CacheConfig(cacheNames = {"entries"})
 public class EntryDataStoreOperationsService implements DataStoreOperations<String, Entry> {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(EntryDataStoreOperationsService.class);
+
     @Autowired
     private EntryRepository entryRepository;
 
@@ -42,9 +46,11 @@ public class EntryDataStoreOperationsService implements DataStoreOperations<Stri
     public boolean add(Entry entry) {
         Optional<Entry> entryOptional = get(entry);
         if (!entryOptional.isPresent()) {
-            entry = entryRepository.save(entry);
-            if (entry != null) {
+            try {
+                entryRepository.save(entry);
                 return true;
+            } catch (IllegalArgumentException exception) {
+                LOGGER.error("Error saving Entry during the Add Operation.");
             }
         }
         return false;
@@ -62,11 +68,14 @@ public class EntryDataStoreOperationsService implements DataStoreOperations<Stri
         Optional<Entry> entryOptional = get(entry);
         if (entryOptional.isPresent()) {
             Entry retrievedEntry = entryOptional.get();
-            entryWrapperContext.setEntry(retrievedEntry);
-
             if (retrievedEntry.getId().equals(entry.getId())) {
-                entryRepository.delete(entryOptional.get());
-                return true;
+                entryWrapperContext.setEntry(retrievedEntry);
+                try {
+                    entryRepository.delete(entryOptional.get());
+                    return true;
+                } catch (IllegalArgumentException exception) {
+                    LOGGER.error("Error deleting Entry during the Delete Operation.");
+                }
             }
         }
         return false;
@@ -86,7 +95,13 @@ public class EntryDataStoreOperationsService implements DataStoreOperations<Stri
         if (retrievedEntryOpt.isPresent()) {
             Entry retrievedEntry = retrievedEntryOpt.get();
             if (retrievedEntry.getId().equals(entry.getId())) {
-                entryRepository.delete(retrievedEntry);
+
+                try {
+                    entryRepository.delete(retrievedEntry);
+                } catch (IllegalArgumentException exception) {
+                    LOGGER.error("Error deleting Entry during the Update Operation.");
+                    return Optional.empty();
+                }
 
                 // Update the Value
                 retrievedEntry.setValue(entry.getValue());
@@ -96,9 +111,10 @@ public class EntryDataStoreOperationsService implements DataStoreOperations<Stri
                 retrievedEntry.setLastModifiedDateTime(modifiedDateTime);
                 retrievedEntry.setAuditId(retrievedEntry.getAuditId() + 1);
 
-                retrievedEntry = entryRepository.save(retrievedEntry);
-                if (retrievedEntry != null) {
-                    return Optional.of(retrievedEntry);
+                try {
+                    return Optional.of(entryRepository.save(retrievedEntry));
+                } catch (IllegalArgumentException exception) {
+                    LOGGER.error("Error saving Entry during the Update Operation.");
                 }
             }
         }

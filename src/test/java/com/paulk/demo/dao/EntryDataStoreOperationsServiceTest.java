@@ -66,7 +66,7 @@ public class EntryDataStoreOperationsServiceTest {
         Entry entry = new Entry("testValue");
         // 2. Setup mocks.
         Mockito.when(entryRepository.findById(Mockito.any())).thenReturn(Optional.empty());
-        Mockito.when(entryRepository.save(Mockito.any())).thenReturn(null);
+        Mockito.when(entryRepository.save(Mockito.any())).thenThrow(IllegalArgumentException.class);
         // 3. Perform action
         boolean operationSuccessful = entryDataStoreOperationsService.add(entry);
         // 4. Assert results.
