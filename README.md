@@ -167,7 +167,7 @@ Request Body - An `EntryActionInput` object:
 ```json
 {
   "entry": {
-    "value": "John Lennon"
+    "value": "Rabbit Test"
   }
 }
 ```
@@ -179,7 +179,7 @@ curl --location --request POST 'http://localhost:8080/entries/entry' \
 --header 'Content-Type: application/json' \
 --data-raw '{
     "entry": {
-      "value":"John Lennon"
+        "value":"Rabbit Test"
     }
 }'
 ```
@@ -197,11 +197,18 @@ Sample Successful Response:
 ```json
 {
   "entry": {
-    "id": "8bbdf639-942b-41ea-936f-4ddeea6601f5",
-    "value": "John Lennon",
-    "createdDateTime": "2021-03-29T14:48:50.256",
-    "lastModifiedDateTime": "2021-03-29T14:48:50.256",
-    "auditId": 1
+    "id": "5de624fb-cb76-41d4-ba24-070d7b87f6f2",
+    "value": "Rabbit Test",
+    "audits": {
+      "auditList": [
+        {
+          "timestamp": "2021-03-30T13:02:31.21",
+          "auditId": 1,
+          "action": "Add"
+        }
+      ],
+      "nextAuditId": 2
+    }
   },
   "error": null
 }
@@ -256,9 +263,10 @@ Request Body - An `EntryActionInput` object:
 ```json
 {
   "entry": {
-    "id": "8bbdf639-942b-41ea-936f-4ddeea6601f5",
-    "value": "John Lennon"
-  }
+    "id": "5de624fb-cb76-41d4-ba24-070d7b87f6f2",
+    "value": "Rabbit Test"
+  },
+  "error": null
 }
 ```
 
@@ -269,8 +277,10 @@ curl --location --request DELETE 'http://localhost:8080/entries/entry' \
 --header 'Content-Type: application/json' \
 --data-raw '{
     "entry": {
-        "value":"John Lennon",
-    }
+        "id": "5de624fb-cb76-41d4-ba24-070d7b87f6f2",
+            "value": "Rabbit Test"
+    },
+    "error": null
 }'
 ```
 
@@ -287,11 +297,23 @@ Sample Successful Response:
 ```json
 {
   "entry": {
-    "id": "8bbdf639-942b-41ea-936f-4ddeea6601f5",
-    "value": "John Lennon",
-    "createdDateTime": "2021-03-29T14:48:50.256",
-    "lastModifiedDateTime": "2021-03-29T14:48:50.256",
-    "auditId": 1
+    "id": "5de624fb-cb76-41d4-ba24-070d7b87f6f2",
+    "value": "Rabbit Test",
+    "audits": {
+      "auditList": [
+        {
+          "timestamp": "2021-03-30T13:02:31.21",
+          "auditId": 1,
+          "action": "Add"
+        },
+        {
+          "timestamp": "2021-03-30T13:03:40.582",
+          "auditId": 2,
+          "action": "Delete"
+        }
+      ],
+      "nextAuditId": 3
+    }
   },
   "error": null
 }
@@ -345,10 +367,10 @@ Request Body - An `EntryActionInput` object:
 
 ```json
 {
-  "key": "Ringo Star",
+  "key":"Ringo Star",
   "entry": {
-    "id": "aab81683-ce86-4954-9207-6094a1d82e7f",
-    "value": "Ringo Starr"
+    "id": "47f268bd-0d95-480b-8261-bb436e6ed96c",
+    "value": "Ringo Star"
   }
 }
 ```
@@ -361,8 +383,8 @@ curl --location --request PUT 'http://localhost:8080/entries/entry' \
 --data-raw '{
     "key":"Ringo Star",
     "entry": {
-        "id": "aab81683-ce86-4954-9207-6094a1d82e7f",
-            "value": "Ringo Starr"
+        "id": "47f268bd-0d95-480b-8261-bb436e6ed96c",
+        "value": "Ringo Star"
     }
 }'
 ```
@@ -437,7 +459,7 @@ The get `Entry` operation is supported by the following Restful CRUD operation:
 Sample Request:
 
 ```shell
-curl --location --request GET 'http://localhost:8080/entries/entry/John Lennon/id/ddabce27-f6a7-4860-8111-5728b5f4c915'
+curl --location --request GET 'http://localhost:8080/entries/entry/Ringo Star/id/47f268bd-0d95-480b-8261-bb436e6ed96c'
 ```
 
 ### Response
@@ -453,8 +475,23 @@ Sample Successful Response:
 ```json
 {
   "entry": {
-    "id": "8bbdf639-942b-41ea-936f-4ddeea6601f5",
-    "value": "John Lennon"
+    "id": "47f268bd-0d95-480b-8261-bb436e6ed96c",
+    "value": "Ringo Star",
+    "audits": {
+      "auditList": [
+        {
+          "timestamp": "2021-03-30T13:02:04.119",
+          "auditId": 1,
+          "action": "Add"
+        },
+        {
+          "timestamp": "2021-03-30T13:02:16.678",
+          "auditId": 2,
+          "action": "Update"
+        }
+      ],
+      "nextAuditId": 3
+    }
   },
   "error": null
 }
@@ -507,7 +544,7 @@ The get all `Entry` operation is supported by the following Restful CRUD operati
 Sample Request:
 
 ```shell
-curl --location --request GET 'http://localhost:8080/entries/entry/John Lennon/id/ddabce27-f6a7-4860-8111-5728b5f4c915'
+curl --location --request GET 'http://localhost:8080/entries'
 ```
 
 ### Response
@@ -524,32 +561,37 @@ Sample Successful Response:
 {
   "entries": [
     {
-      "id": "d8f79374-b51c-47ef-9937-c44323d54183",
-      "value": "Paul McCartney",
-      "createdDateTime": "2021-03-29T14:48:50.256",
-      "lastModifiedDateTime": "2021-03-29T14:48:50.256",
-      "auditId": 1
+      "id": "5de624fb-cb76-41d4-ba24-070d7b87f6f2",
+      "value": "Rabbit Test",
+      "audits": {
+        "auditList": [
+          {
+            "timestamp": "2021-03-30T13:02:31.21",
+            "auditId": 1,
+            "action": "Add"
+          }
+        ],
+        "nextAuditId": 2
+      }
     },
     {
-      "id": "aab81683-ce86-4954-9207-6094a1d82e7f",
-      "value": "Ringo Starr",
-      "createdDateTime": "2021-03-29T14:48:50.256",
-      "lastModifiedDateTime": "2021-03-29T14:49:50.256",
-      "auditId": 2
-    },
-    {
-      "id": "f0462965-4488-45f5-a52a-5b5bffc5fade",
-      "value": "George Harrison",
-      "createdDateTime": "2021-03-29T14:48:50.256",
-      "lastModifiedDateTime": "2021-03-29T14:48:50.256",
-      "auditId": 1
-    },
-    {
-      "id": "8bbdf639-942b-41ea-936f-4ddeea6601f5",
-      "value": "John Lennon",
-      "createdDateTime": "2021-03-29T14:48:50.256",
-      "lastModifiedDateTime": "2021-03-29T14:48:50.256",
-      "auditId": 1
+      "id": "47f268bd-0d95-480b-8261-bb436e6ed96c",
+      "value": "Ringo Star",
+      "audits": {
+        "auditList": [
+          {
+            "timestamp": "2021-03-30T13:02:04.119",
+            "auditId": 1,
+            "action": "Add"
+          },
+          {
+            "timestamp": "2021-03-30T13:02:16.678",
+            "auditId": 2,
+            "action": "Update"
+          }
+        ],
+        "nextAuditId": 3
+      }
     }
   ],
   "error": null

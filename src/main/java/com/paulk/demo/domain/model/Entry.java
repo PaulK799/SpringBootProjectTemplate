@@ -1,18 +1,11 @@
 package com.paulk.demo.domain.model;
 
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
-import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import com.paulk.demo.DemoApplication;
 import com.paulk.demo.utils.StringBuilderUtils;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.redis.core.RedisHash;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.ZoneOffset;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -28,15 +21,7 @@ public class Entry implements Serializable {
     @Id
     protected String value;
 
-    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
-    @JsonSerialize(using = LocalDateTimeSerializer.class)
-    private LocalDateTime createdDateTime;
-
-    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
-    @JsonSerialize(using = LocalDateTimeSerializer.class)
-    private LocalDateTime lastModifiedDateTime;
-
-    private Integer auditId;
+    protected Audits audits;
 
     /**
      * Default constructor for {@link Entry}.
@@ -44,9 +29,7 @@ public class Entry implements Serializable {
     public Entry() {
         this.value = null;
         this.id = UUID.randomUUID().toString();
-        this.createdDateTime = LocalDateTime.now(ZoneId.of(ZoneOffset.UTC.toString()));
-        this.lastModifiedDateTime = LocalDateTime.now(ZoneId.of(ZoneOffset.UTC.toString()));
-        this.auditId = 1;
+        this.audits = new Audits();
     }
 
     /**
@@ -57,9 +40,7 @@ public class Entry implements Serializable {
     public Entry(String value) {
         this.value = value;
         this.id = UUID.randomUUID().toString();
-        this.createdDateTime = LocalDateTime.now(ZoneId.of(ZoneOffset.UTC.toString()));
-        this.lastModifiedDateTime = LocalDateTime.now(ZoneId.of(ZoneOffset.UTC.toString()));
-        this.auditId = 1;
+        this.audits = new Audits();
     }
 
     /**
@@ -71,9 +52,7 @@ public class Entry implements Serializable {
     public Entry(String value, String id) {
         this.value = value;
         this.id = id;
-        this.createdDateTime = LocalDateTime.now(ZoneId.of(ZoneOffset.UTC.toString()));
-        this.lastModifiedDateTime = LocalDateTime.now(ZoneId.of(ZoneOffset.UTC.toString()));
-        this.auditId = 1;
+        this.audits = new Audits();
     }
 
     /**
@@ -104,48 +83,21 @@ public class Entry implements Serializable {
     }
 
     /**
-     * Get the created date time {@link LocalDateTime}.
+     * Get the auditid represented by an {@link Audits}.
      *
-     * @return The {@link LocalDateTime} representing the created date time for the {@link Entry}.
+     * @return The {@link Audits} representing auditid for the {@link Entry}.
      */
-    public LocalDateTime getCreatedDateTime() {
-        return createdDateTime;
+    public Audits getAudits() {
+        return audits;
     }
 
     /**
-     * Get the created date time {@link LocalDateTime}.
+     * Set the {@link Audits} value for the {@link Entry}.
      *
-     * @return The {@link LocalDateTime} representing the created date time for the {@link Entry}.
+     * @param audits - The {@link Audits} to be set.
      */
-    public LocalDateTime getLastModifiedDateTime() {
-        return lastModifiedDateTime;
-    }
-
-    /**
-     * Updates the last Modified {@link LocalDateTime}.
-     *
-     * @param lastModifiedDateTime - The {@link LocalDateTime} to be set.
-     */
-    public void setLastModifiedDateTime(LocalDateTime lastModifiedDateTime) {
-        this.lastModifiedDateTime = lastModifiedDateTime;
-    }
-
-    /**
-     * Get the auditid represented by an {@link Integer}.
-     *
-     * @return The {@link Integer} representing auditid for the {@link Entry}.
-     */
-    public Integer getAuditId() {
-        return auditId;
-    }
-
-    /**
-     * Sets the auditid of type {@link Integer}.
-     *
-     * @param auditId - The {@link Integer} to be set.
-     */
-    public void setAuditId(Integer auditId) {
-        this.auditId = auditId;
+    public void setAudits(Audits audits) {
+        this.audits = audits;
     }
 
     /**
@@ -191,9 +143,7 @@ public class Entry implements Serializable {
         builder.append("{");
         StringBuilderUtils.addFieldToBuilder(builder, "id", this.id, true);
         StringBuilderUtils.addFieldToBuilder(builder, "value", this.value, true);
-        StringBuilderUtils.addFieldToBuilder(builder, "createdAt", this.createdDateTime, true);
-        StringBuilderUtils.addFieldToBuilder(builder, "lastModifiedDateTime", this.lastModifiedDateTime, true);
-        StringBuilderUtils.addFieldToBuilder(builder, "auditId", this.auditId, false);
+        StringBuilderUtils.addFieldToBuilder(builder, "audits", this.audits, false);
         builder.append("}");
         return builder.toString();
     }

@@ -1,5 +1,8 @@
 package com.paulk.demo.dao;
 
+import com.paulk.demo.constants.AuditActionCodes;
+import com.paulk.demo.domain.model.Audit;
+import com.paulk.demo.domain.model.Audits;
 import com.paulk.demo.domain.model.Entry;
 import com.paulk.demo.repository.EntryRepository;
 import com.paulk.demo.utils.EntryWrapperContext;
@@ -12,9 +15,6 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Component;
 
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.ZoneOffset;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Optional;
@@ -47,6 +47,12 @@ public class EntryDataStoreOperationsService implements DataStoreOperations<Stri
         Optional<Entry> entryOptional = get(entry);
         if (!entryOptional.isPresent()) {
             try {
+                Audits audits = Optional.ofNullable(entry.getAudits())
+                        .orElseGet(Audits::new);
+                Audit audit = audits.createAudit(audits, AuditActionCodes.ADD.getCode());
+                audits.getAuditList().add(audit);
+                entry.setAudits(audits);
+
                 entryRepository.save(entry);
                 return true;
             } catch (IllegalArgumentException exception) {
@@ -69,6 +75,14 @@ public class EntryDataStoreOperationsService implements DataStoreOperations<Stri
         if (entryOptional.isPresent()) {
             Entry retrievedEntry = entryOptional.get();
             if (retrievedEntry.getId().equals(entry.getId())) {
+                // Generate Audit
+                Audits audits = Optional.ofNullable(retrievedEntry.getAudits())
+                        .orElseGet(Audits::new);
+                Audit audit = audits.createAudit(audits, AuditActionCodes.DELETE.getCode());
+                audits.getAuditList().add(audit);
+                retrievedEntry.setAudits(audits);
+
+                // Save in Request Scoped object for use in the Controller.
                 entryWrapperContext.setEntry(retrievedEntry);
                 try {
                     entryRepository.delete(entryOptional.get());
@@ -95,7 +109,6 @@ public class EntryDataStoreOperationsService implements DataStoreOperations<Stri
         if (retrievedEntryOpt.isPresent()) {
             Entry retrievedEntry = retrievedEntryOpt.get();
             if (retrievedEntry.getId().equals(entry.getId())) {
-
                 try {
                     entryRepository.delete(retrievedEntry);
                 } catch (IllegalArgumentException exception) {
@@ -106,10 +119,12 @@ public class EntryDataStoreOperationsService implements DataStoreOperations<Stri
                 // Update the Value
                 retrievedEntry.setValue(entry.getValue());
 
-                // Update the Modified Date Time
-                LocalDateTime modifiedDateTime = LocalDateTime.now(ZoneId.of(ZoneOffset.UTC.toString()));
-                retrievedEntry.setLastModifiedDateTime(modifiedDateTime);
-                retrievedEntry.setAuditId(retrievedEntry.getAuditId() + 1);
+                // Add Audit for Update Operation
+                Audits audits = Optional.ofNullable(retrievedEntry.getAudits())
+                        .orElseGet(Audits::new);
+                Audit audit = audits.createAudit(audits, AuditActionCodes.UPDATE.getCode());
+                audits.getAuditList().add(audit);
+                retrievedEntry.setAudits(audits);
 
                 try {
                     return Optional.of(entryRepository.save(retrievedEntry));
