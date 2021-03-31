@@ -17,7 +17,7 @@ import javax.servlet.http.HttpServletResponse;
  * Override the {@link HandlerInterceptor} to {@link HandlerInterceptor#afterCompletion(HttpServletRequest, HttpServletResponse, Object, Exception)} to implement request logging.
  */
 @Component
-public class RequestLoggingInterceptor implements HandlerInterceptor {
+public class LoggingInterceptor implements HandlerInterceptor {
     private static final String SPACE = " ";
     private static final Logger ASYNCLOGGER = LoggerFactory.getLogger("jsonLogMessages");
 
