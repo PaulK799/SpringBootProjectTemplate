@@ -1,13 +1,46 @@
 <configuration>
     <springProperty scope="context" name="appenderLevel" source="logging.appender.level"/>
+    <property name="baseDirectory" value="${catalina.home:-.}"/>
+    <!-- Insert the current time formatted as "yyyyMMdd'T'HHmmss" under
+      the key "bySecond" into the logger context. This value will be
+      available to all subsequent configuration elements. -->
+    <timestamp key="timeInSeconds" datePattern="yyyyMMdd'T'HHmmss"/>
+    <timestamp key="date" datePattern="yyyyMMdd"/>
+
+    <appender name="SIFTAUDIT" class="ch.qos.logback.classic.sift.SiftingAppender">
+        <discriminator>
+            <key>logname</key>
+            <defaultValue>unknown</defaultValue>
+        </discriminator>
+        <sift>
+            <appender name="FILE-${logname}-{date}-${timeInSeconds}" class="ch.qos.logback.core.FileAppender">
+                <immediateFlush>true</immediateFlush>
+                <file>${baseDirectory}/logs/${date}/${logname}-${timeInSeconds}.log</file>
+                <append>false</append>
+                <layout class="ch.qos.logback.classic.PatternLayout">
+                    <pattern>%msg %n</pattern>
+                </layout>
+            </appender>
+        </sift>
+    </appender>
+
+    <appender name="ASYNCLOG" class="ch.qos.logback.classic.AsyncAppender">
+        <discardingThreshold>0</discardingThreshold>
+        <queueSize>128</queueSize>
+        <appender-ref ref="SIFTAUDIT" />
+    </appender>
+
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
             <pattern>%d{ISO8601} [%thread] %-5level %logger{36} [%X] - %msg %n</pattern>
         </encoder>
     </appender>
 
+    <logger name="jsonLogMessages" level="${appenderLevel}" additivity="false">
+        <appender-ref ref="ASYNCLOG"/>
+    </logger>
+
     <root level="${appenderLevel}">
         <appender-ref ref="STDOUT" />
     </root>
-
 </configuration>

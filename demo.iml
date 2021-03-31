@@ -83,7 +83,6 @@
     <orderEntry type="library" name="Maven: org.springframework.data:spring-data-commons:2.4.6" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-tx:5.3.5" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-oxm:5.3.5" level="project" />
-    <orderEntry type="library" name="Maven: org.springframework:spring-context-support:5.3.5" level="project" />
     <orderEntry type="library" name="Maven: io.lettuce:lettuce-core:6.0.3.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: io.netty:netty-common:4.1.60.Final" level="project" />
     <orderEntry type="library" name="Maven: io.netty:netty-handler:4.1.60.Final" level="project" />
@@ -93,6 +92,11 @@
     <orderEntry type="library" name="Maven: io.netty:netty-transport:4.1.60.Final" level="project" />
     <orderEntry type="library" name="Maven: io.projectreactor:reactor-core:3.4.4" level="project" />
     <orderEntry type="library" name="Maven: org.reactivestreams:reactive-streams:1.0.3" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework.boot:spring-boot-starter-cache:2.4.4" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework:spring-context-support:5.3.5" level="project" />
+    <orderEntry type="library" name="Maven: com.github.ben-manes.caffeine:caffeine:2.9.0" level="project" />
+    <orderEntry type="library" name="Maven: org.checkerframework:checker-qual:3.10.0" level="project" />
+    <orderEntry type="library" name="Maven: com.google.errorprone:error_prone_annotations:2.5.1" level="project" />
     <orderEntry type="library" name="Maven: org.springframework.cloud:spring-cloud-starter-bootstrap:3.0.2" level="project" />
     <orderEntry type="library" name="Maven: org.springframework.cloud:spring-cloud-starter:3.0.2" level="project" />
     <orderEntry type="library" name="Maven: org.springframework.cloud:spring-cloud-context:3.0.2" level="project" />
@@ -124,14 +128,11 @@
     <orderEntry type="library" name="Maven: com.google.guava:failureaccess:1.0.1" level="project" />
     <orderEntry type="library" name="Maven: com.google.guava:listenablefuture:9999.0-empty-to-avoid-conflict-with-guava" level="project" />
     <orderEntry type="library" name="Maven: com.google.code.findbugs:jsr305:3.0.2" level="project" />
-    <orderEntry type="library" name="Maven: org.checkerframework:checker-qual:2.5.2" level="project" />
-    <orderEntry type="library" name="Maven: com.google.errorprone:error_prone_annotations:2.2.0" level="project" />
     <orderEntry type="library" name="Maven: com.google.j2objc:j2objc-annotations:1.1" level="project" />
     <orderEntry type="library" name="Maven: org.codehaus.mojo:animal-sniffer-annotations:1.17" level="project" />
     <orderEntry type="library" name="Maven: org.springframework.cloud:spring-cloud-starter-loadbalancer:3.0.2" level="project" />
     <orderEntry type="library" name="Maven: org.springframework.cloud:spring-cloud-loadbalancer:3.0.2" level="project" />
     <orderEntry type="library" name="Maven: io.projectreactor.addons:reactor-extra:3.4.2" level="project" />
-    <orderEntry type="library" name="Maven: org.springframework.boot:spring-boot-starter-cache:2.4.4" level="project" />
     <orderEntry type="library" name="Maven: com.stoyanr:evictor:1.0.0" level="project" />
     <orderEntry type="library" name="Maven: org.springframework.boot:spring-boot-starter-amqp:2.4.4" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-messaging:5.3.5" level="project" />
