@@ -266,7 +266,7 @@ public class EntriesControllerTest {
         entriesResponse.getEntries().add(entry);
         Mockito.when(actionService.getAllEntries()).thenReturn(entriesResponse);
 
-        this.mockMvc.perform(get("/entries/all")
+        this.mockMvc.perform(get("/entries")
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
@@ -283,7 +283,7 @@ public class EntriesControllerTest {
         EntriesResponse entriesResponse = new EntriesResponse();
         Mockito.when(actionService.getAllEntries()).thenReturn(entriesResponse);
 
-        this.mockMvc.perform(get("/entries/all")
+        this.mockMvc.perform(get("/entries")
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
