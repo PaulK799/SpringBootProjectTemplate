@@ -14,6 +14,8 @@ public class EntriesResponse implements Serializable {
 
     private List<Entry> entries;
     private Error error;
+    private int totalPages;
+    private long totalEntries;
 
     /**
      * Default Constructor for {@link EntriesResponse}.
@@ -21,6 +23,8 @@ public class EntriesResponse implements Serializable {
     public EntriesResponse() {
         this.entries = new ArrayList<>();
         this.error = null;
+        this.totalPages = 0;
+        this.totalEntries = 0;
     }
 
     /**
@@ -54,6 +58,42 @@ public class EntriesResponse implements Serializable {
     }
 
     /**
+     * Get the totalPages for the {@link EntriesResponse}.
+     *
+     * @return - The totalPages.
+     */
+    public int getTotalPages() {
+        return totalPages;
+    }
+
+    /**
+     * Set the total pages for the {@link EntriesResponse}.
+     *
+     * @param totalPages - The totalPages.
+     */
+    public void setTotalPages(int totalPages) {
+        this.totalPages = totalPages;
+    }
+
+    /**
+     * Get the total entries for the {@link EntriesResponse}.
+     *
+     * @return - The totalEntries.
+     */
+    public long getTotalEntries() {
+        return totalEntries;
+    }
+
+    /**
+     * Set the total entries for the {@link EntriesResponse}.
+     *
+     * @param totalEntries - The totalEntries.
+     */
+    public void setTotalEntries(long totalEntries) {
+        this.totalEntries = totalEntries;
+    }
+
+    /**
      * Implements object comparison for a {@link EntriesResponse}.
      *
      * @param obj - The {@link Object} being parsed.
@@ -71,7 +111,9 @@ public class EntriesResponse implements Serializable {
 
         EntriesResponse that = (EntriesResponse) obj;
         return Objects.equals(this.entries, that.entries) &&
-                Objects.equals(this.error, that.error);
+                Objects.equals(this.error, that.error) &&
+                Objects.equals(this.totalEntries, that.totalEntries) &&
+                Objects.equals(this.totalPages, that.totalPages);
     }
 
     /**
@@ -81,7 +123,7 @@ public class EntriesResponse implements Serializable {
      */
     @Override
     public int hashCode() {
-        return Objects.hash(this.entries, this.error);
+        return Objects.hash(this.entries, this.error, this.totalEntries, this.totalPages);
     }
 
 
@@ -95,7 +137,9 @@ public class EntriesResponse implements Serializable {
         StringBuilder builder = new StringBuilder();
         builder.append("{");
         StringBuilderUtils.addFieldToBuilder(builder, "entry", this.entries, true);
-        StringBuilderUtils.addFieldToBuilder(builder, "error", this.error, false);
+        StringBuilderUtils.addFieldToBuilder(builder, "error", this.error, true);
+        StringBuilderUtils.addFieldToBuilder(builder, "totalEntries", this.totalEntries, true);
+        StringBuilderUtils.addFieldToBuilder(builder, "totalPages", this.totalPages, false);
         builder.append("}");
         return builder.toString();
     }

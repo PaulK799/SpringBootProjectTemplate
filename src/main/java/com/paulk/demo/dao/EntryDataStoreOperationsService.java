@@ -3,17 +3,24 @@ package com.paulk.demo.dao;
 import com.paulk.demo.constants.AuditActionCodes;
 import com.paulk.demo.domain.model.Audit;
 import com.paulk.demo.domain.model.Audits;
+import com.paulk.demo.domain.model.EntriesResponse;
 import com.paulk.demo.domain.model.Entry;
 import com.paulk.demo.domain.model.EntryOperationResponse;
+import com.paulk.demo.repository.EntryPagingRepository;
 import com.paulk.demo.repository.EntryRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Component;
 
-import java.util.Collection;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -26,7 +33,10 @@ public class EntryDataStoreOperationsService implements DataStoreOperations<Stri
     private static final Logger LOGGER = LoggerFactory.getLogger(EntryDataStoreOperationsService.class);
 
     @Autowired
-    private EntryRepository entryRepository;
+    protected EntryRepository entryRepository;
+
+    @Autowired
+    protected EntryPagingRepository entryPagingRepository;
 
     /**
      * Add an {@link Entry} to the data store.
@@ -154,19 +164,46 @@ public class EntryDataStoreOperationsService implements DataStoreOperations<Stri
     }
 
     /**
-     * Get a {@link Collection} of all {@link Entry} in the data store.
+     * Get a {@link Set} of all {@link Entry} in the data store.
      *
-     * @return A {@link Collection} of all {@link Entry}.
+     * @return A {@link Set} of all {@link Entry}.
      */
     @Override
-    public Set<Entry> getAll() {
+    public EntriesResponse getAll() {
         LOGGER.debug("Start Debugging (Find All Entry) ---- ");
-        Set<Entry> entries = new HashSet<>();
+        EntriesResponse entriesResponse = new EntriesResponse();
+        List<Entry> entries = new ArrayList<>();
         Iterable<Entry> entryIterable = entryRepository.findAll();
         for (Entry entry : entryIterable) {
             entries.add(entry);
         }
+        entriesResponse.setTotalEntries(entries.size());
+        entriesResponse.getEntries().addAll(entries);
         LOGGER.debug("End Debugging (Find All Entry) ---- ");
-        return entries;
+        return entriesResponse;
+    }
+
+    /**
+     * Get a {@link Set} of all {@link Entry} in the data store.
+     *
+     * @param pageNumber - The {@link Integer} page number for the response.
+     * @param pageSize   - The {@link Integer} page size for the response.
+     * @return A {@link Set} of all {@link Entry}.
+     */
+    @Override
+    public EntriesResponse getAll(Integer pageNumber, Integer pageSize) {
+        LOGGER.debug("Start Debugging (Find All Paged Entry) ---- ");
+        EntriesResponse entriesResponse = new EntriesResponse();
+
+        Pageable paging = PageRequest.of(pageNumber, pageSize, Sort.by("value"));
+
+        Page<Entry> pagedResult = entryPagingRepository.findAll(paging);
+        if (pagedResult.hasContent()) {
+            entriesResponse.getEntries().addAll(pagedResult.getContent());
+            entriesResponse.setTotalEntries(pagedResult.getTotalElements());
+            entriesResponse.setTotalPages(pagedResult.getTotalPages());
+        }
+        LOGGER.debug("End Debugging (Find All Paged Entry) ---- ");
+        return entriesResponse;
     }
 }

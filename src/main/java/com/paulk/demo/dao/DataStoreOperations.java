@@ -1,9 +1,11 @@
 package com.paulk.demo.dao;
 
+import com.paulk.demo.domain.model.EntriesResponse;
 import com.paulk.demo.domain.model.Entry;
 import com.paulk.demo.domain.model.EntryOperationResponse;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -49,9 +51,18 @@ public interface DataStoreOperations<K, V> {
     public EntryOperationResponse get(V entry);
 
     /**
+     * Get a {@link Set} of all {@link V} in the data store.
+     *
+     * @return A {@link Set} of all {@link V} in the data store.
+     */
+    public EntriesResponse getAll();
+
+    /**
      * Get a {@link Collection} of all {@link V} in the data store.
      *
-     * @return A
+     * @param pageNumber - The {@link Integer} page number for the response.
+     * @param pageSize   - The {@link Integer} page size for the response.
+     * @return A {@link List} of all {@link V} in the data store.
      */
-    public Set<V> getAll();
+    public EntriesResponse getAll(Integer pageNumber, Integer pageSize);
 }

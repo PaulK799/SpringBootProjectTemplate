@@ -1,5 +1,6 @@
 package com.paulk.demo.dao;
 
+import com.paulk.demo.domain.model.EntriesResponse;
 import com.paulk.demo.domain.model.Entry;
 import com.paulk.demo.domain.model.EntryOperationResponse;
 import com.paulk.demo.repository.EntryRepository;
@@ -15,7 +16,9 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -170,20 +173,19 @@ public class EntryDataStoreOperationsServiceTest {
     @Test
     public void getAllSuccess() {
         // 1. Setup test data.
-        Set<Entry> entries = new HashSet<>();
-        entries.add(new Entry("A"));
-        entries.add(new Entry("B"));
-        entries.add(new Entry("C"));
-        entries.add(new Entry("a"));
-        entries.add(new Entry("b"));
-        entries.add(new Entry("c"));
+        List<Entry> expectedEntries = new ArrayList<>();
+        expectedEntries.add(new Entry("A"));
+        expectedEntries.add(new Entry("B"));
+        expectedEntries.add(new Entry("C"));
+        expectedEntries.add(new Entry("a"));
+        expectedEntries.add(new Entry("b"));
+        expectedEntries.add(new Entry("c"));
 
         // 2. Setup mocks.
-        Mockito.when(entryRepository.findAll()).thenReturn(entries);
+        Mockito.when(entryRepository.findAll()).thenReturn(expectedEntries);
         // 3. Perform action
-        Set<Entry> actualEntries = entryDataStoreOperationsService.getAll();
+        EntriesResponse actualEntriesResponse = entryDataStoreOperationsService.getAll();
         // 4. Assert results.
-        Set<Entry> remainingEntries = SetComparisonUtils.getDifference(actualEntries, entries);
-        Assertions.assertEquals(0, remainingEntries.size(), "Assert getAll operation behavior is correct.");
+        Assertions.assertEquals(expectedEntries.size(), actualEntriesResponse.getEntries().size(), "Assert getAll operation behavior is correct.");
     }
 }

@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 import java.util.Optional;
@@ -184,13 +185,37 @@ public class EntriesController {
      * @param model - The {@link Model} for processing.
      * @return A {@link ResponseEntity} containing an {@link EntriesResponse}. If successful an {@link Entry} returned, otherwise an {@link Error}.
      */
-    @GetMapping("/entries")
+    @GetMapping("/entries/all")
     public ResponseEntity<EntriesResponse> getEntries(Model model) {
         // Setup
         EntriesResponse entriesResponse = new EntriesResponse();
         model.addAttribute(ENTRY_RESPONSE_ATTRIBUTE, entriesResponse);
         List<Entry> entries = entriesResponse.getEntries();
-        entriesResponse.getEntries().addAll(entryActionService.getAllEntries());
+        entriesResponse = entryActionService.getAllEntries();
+
+        // Sort with Comparator.
+        entries.sort(new EntryComparator());
+
+        if (!entriesResponse.getEntries().isEmpty()) {
+            return new ResponseEntity<>(entriesResponse, HttpStatus.OK);
+        } else {
+            return EntriesResponse.generateEntryResponseError(ErrorCodes.NOT_FOUND, ErrorCodes.NOT_FOUND_DESCRIPTION, HttpStatus.NOT_FOUND);
+        }
+    }
+
+    /**
+     * Gets all {@link Entry}.
+     *
+     * @param model - The {@link Model} for processing.
+     * @return A {@link ResponseEntity} containing an {@link EntriesResponse}. If successful an {@link Entry} returned, otherwise an {@link Error}.
+     */
+    @GetMapping("/entries")
+    public ResponseEntity<EntriesResponse> getEntriesPaging(@RequestParam Integer pageNumber, @RequestParam Integer pageSize, Model model) {
+        // Setup
+        EntriesResponse entriesResponse = new EntriesResponse();
+        model.addAttribute(ENTRY_RESPONSE_ATTRIBUTE, entriesResponse);
+        List<Entry> entries = entriesResponse.getEntries();
+        entriesResponse = entryActionService.getAllEntries(pageNumber, pageSize);
 
         // Sort with Comparator.
         entries.sort(new EntryComparator());

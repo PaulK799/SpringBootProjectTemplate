@@ -3,14 +3,20 @@ package com.paulk.demo.service;
 import com.paulk.demo.dao.DataStoreOperations;
 import com.paulk.demo.dao.EntryDataStoreOperationsService;
 import com.paulk.demo.domain.input.EntryActionInput;
+import com.paulk.demo.domain.model.EntriesResponse;
 import com.paulk.demo.domain.model.Entry;
 import com.paulk.demo.domain.model.EntryOperationResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -70,9 +76,20 @@ public class EntryActionService {
     /**
      * Method for performing the {@link EntryDataStoreOperationsService#getAll()} operation.
      *
-     * @return A {@link Set} of all {@link Entry} in the data store.
+     * @return The {@link EntriesResponse} to be processed.
      */
-    public Set<Entry> getAllEntries() {
+    public EntriesResponse getAllEntries() {
         return entryDataStoreOperationsService.getAll();
+    }
+
+    /**
+     * Method for performing the {@link EntryDataStoreOperationsService#getAll()} operation.
+     *
+     * @param pageNumber - The {@link Integer} page number for the response.
+     * @param pageSize   - The {@link Integer} page size for the response.
+     * @return The {@link EntriesResponse} to be processed.
+     */
+    public EntriesResponse getAllEntries(Integer pageNumber, Integer pageSize) {
+        return entryDataStoreOperationsService.getAll(pageNumber, pageSize);
     }
 }

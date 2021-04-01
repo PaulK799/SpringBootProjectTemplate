@@ -1,6 +1,7 @@
 package com.paulk.demo.controller;
 
 import com.paulk.demo.domain.input.EntryActionInput;
+import com.paulk.demo.domain.model.EntriesResponse;
 import com.paulk.demo.domain.model.Entry;
 import com.paulk.demo.domain.model.EntryOperationResponse;
 import com.paulk.demo.service.EntryActionService;
@@ -261,10 +262,11 @@ public class EntriesControllerTest {
      */
     @Test
     public void getAllEntrySuccess() throws Exception {
+        EntriesResponse entriesResponse = new EntriesResponse();
+        entriesResponse.getEntries().add(entry);
+        Mockito.when(actionService.getAllEntries()).thenReturn(entriesResponse);
 
-        Mockito.when(actionService.getAllEntries()).thenReturn(Sets.newSet(new Entry("test")));
-
-        this.mockMvc.perform(get("/entries")
+        this.mockMvc.perform(get("/entries/all")
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
@@ -278,10 +280,10 @@ public class EntriesControllerTest {
      */
     @Test
     public void getAllEntryInvalid() throws Exception {
+        EntriesResponse entriesResponse = new EntriesResponse();
+        Mockito.when(actionService.getAllEntries()).thenReturn(entriesResponse);
 
-        Mockito.when(actionService.getAllEntries()).thenReturn(new HashSet<>());
-
-        this.mockMvc.perform(get("/entries")
+        this.mockMvc.perform(get("/entries/all")
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())

@@ -2,9 +2,9 @@ package com.paulk.demo.service;
 
 import com.paulk.demo.dao.EntryDataStoreOperationsService;
 import com.paulk.demo.domain.input.EntryActionInput;
+import com.paulk.demo.domain.model.EntriesResponse;
 import com.paulk.demo.domain.model.Entry;
 import com.paulk.demo.domain.model.EntryOperationResponse;
-import com.paulk.demo.utils.SetComparisonUtils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -16,8 +16,8 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Test the {@link EntryActionService} class.
@@ -170,20 +170,22 @@ public class EntryActionServiceTest {
     @Test
     public void getAllSuccess() {
         // 1. Setup test data.
-        Set<Entry> entries = new HashSet<>();
-        entries.add(new Entry("A"));
-        entries.add(new Entry("B"));
-        entries.add(new Entry("C"));
-        entries.add(new Entry("a"));
-        entries.add(new Entry("b"));
-        entries.add(new Entry("c"));
+        // 1. Setup test data.
+        EntriesResponse expectedEntriesResponse = new EntriesResponse();
+        List<Entry> expectedEntries = new ArrayList<>();
+        expectedEntries.add(new Entry("A"));
+        expectedEntries.add(new Entry("B"));
+        expectedEntries.add(new Entry("C"));
+        expectedEntries.add(new Entry("a"));
+        expectedEntries.add(new Entry("b"));
+        expectedEntries.add(new Entry("c"));
+        expectedEntriesResponse.getEntries().addAll(expectedEntries);
 
         // 2. Setup mocks.
-        Mockito.when(entryDataStoreOperationsService.getAll()).thenReturn(entries);
+        Mockito.when(entryDataStoreOperationsService.getAll()).thenReturn(expectedEntriesResponse);
         // 3. Perform action
-        Set<Entry> actualEntries = entryActionService.getAllEntries();
+        EntriesResponse actualEntriesResponse = entryDataStoreOperationsService.getAll();
         // 4. Assert results.
-        Set<Entry> remainingEntries = SetComparisonUtils.getDifference(actualEntries, entries);
-        Assertions.assertEquals(0, remainingEntries.size(), "Assert getAllEntries operation behavior is correct.");
+        Assertions.assertEquals(expectedEntries.size(), actualEntriesResponse.getEntries().size(), "Assert getAll operation behavior is correct.");
     }
 }
