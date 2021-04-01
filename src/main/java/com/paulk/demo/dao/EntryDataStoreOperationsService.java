@@ -4,7 +4,7 @@ import com.paulk.demo.constants.AuditActionCodes;
 import com.paulk.demo.domain.model.Audit;
 import com.paulk.demo.domain.model.Audits;
 import com.paulk.demo.domain.model.Entry;
-import com.paulk.demo.domain.model.EntryActionResponse;
+import com.paulk.demo.domain.model.EntryOperationResponse;
 import com.paulk.demo.repository.EntryRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,10 +35,11 @@ public class EntryDataStoreOperationsService implements DataStoreOperations<Stri
      * @return If true, {@link Entry} added successfully, else {@link Entry} already exists.
      */
     @Override
-    public EntryActionResponse add(Entry entry) {
-        EntryActionResponse entryActionResponse = new EntryActionResponse();
-        Optional<Entry> entryOptional = get(entry);
-        if (!entryOptional.isPresent()) {
+    public EntryOperationResponse add(Entry entry) {
+        LOGGER.debug("Start Debugging (Add Entry) ---- ");
+        EntryOperationResponse entryActionResponse = new EntryOperationResponse();
+        EntryOperationResponse getOperationResponse = get(entry);
+        if (!getOperationResponse.isSuccessfulOperation()) {
             try {
                 Audits audits = Optional.ofNullable(entry.getAudits())
                         .orElseGet(Audits::new);
@@ -52,6 +53,7 @@ public class EntryDataStoreOperationsService implements DataStoreOperations<Stri
                 LOGGER.error("Error saving Entry during the Add Operation.");
             }
         }
+        LOGGER.debug("End Debugging (Add Entry) ---- ");
         return entryActionResponse;
     }
 
@@ -62,11 +64,12 @@ public class EntryDataStoreOperationsService implements DataStoreOperations<Stri
      * @return If true, {@link Entry} removed successfully, else {@link Entry} doesn't exists.
      */
     @Override
-    public EntryActionResponse delete(Entry entry) {
-        EntryActionResponse entryActionResponse = new EntryActionResponse();
-        Optional<Entry> entryOptional = get(entry);
-        if (entryOptional.isPresent() && entryOptional.get().getId().equals(entry.getId())) {
-            Entry retrievedEntry = entryOptional.get();
+    public EntryOperationResponse delete(Entry entry) {
+        LOGGER.debug("Start Debugging (Delete Entry) ---- ");
+        EntryOperationResponse entryActionResponse = new EntryOperationResponse();
+        EntryOperationResponse getOperationResponse = get(entry);
+        if (getOperationResponse.isSuccessfulOperation() && getOperationResponse.getEntry().getId().equals(entry.getId())) {
+            Entry retrievedEntry = getOperationResponse.getEntry();
             // Generate Audit
             Audits audits = Optional.ofNullable(retrievedEntry.getAudits())
                     .orElseGet(Audits::new);
@@ -75,12 +78,13 @@ public class EntryDataStoreOperationsService implements DataStoreOperations<Stri
             retrievedEntry.setAudits(audits);
             entryActionResponse.setEntry(retrievedEntry);
             try {
-                entryRepository.delete(entryOptional.get());
+                entryRepository.delete(retrievedEntry);
                 entryActionResponse.setSuccessfulOperation(true);
             } catch (IllegalArgumentException exception) {
                 LOGGER.error("Error deleting Entry during the Delete Operation.");
             }
         }
+        LOGGER.debug("End Debugging (Delete Entry) ---- ");
         return entryActionResponse;
     }
 
@@ -91,12 +95,13 @@ public class EntryDataStoreOperationsService implements DataStoreOperations<Stri
      * @return If true, {@link Entry} added successfully, else {@link Entry} already exists.
      */
     @Override
-    public EntryActionResponse update(String key, Entry entry) {
-        EntryActionResponse entryActionResponse = new EntryActionResponse();
+    public EntryOperationResponse update(String key, Entry entry) {
+        LOGGER.debug("Start Debugging (Update Entry) ---- ");
+        EntryOperationResponse entryActionResponse = new EntryOperationResponse();
         Entry searchEntry = new Entry(key, entry.getId());
-        Optional<Entry> retrievedEntryOpt = get(searchEntry);
-        if (retrievedEntryOpt.isPresent() && retrievedEntryOpt.get().getId().equals(entry.getId())) {
-            Entry retrievedEntry = retrievedEntryOpt.get();
+        EntryOperationResponse getOperationResponse = get(searchEntry);
+        if (getOperationResponse.isSuccessfulOperation() && getOperationResponse.getEntry().getId().equals(entry.getId())) {
+            Entry retrievedEntry = getOperationResponse.getEntry();
             try {
                 entryRepository.delete(retrievedEntry);
             } catch (IllegalArgumentException exception) {
@@ -122,6 +127,7 @@ public class EntryDataStoreOperationsService implements DataStoreOperations<Stri
                 LOGGER.error("Error saving Entry during the Update Operation.");
             }
         }
+        LOGGER.debug("End Debugging (Update Entry) ---- ");
         return entryActionResponse;
     }
 
@@ -132,10 +138,19 @@ public class EntryDataStoreOperationsService implements DataStoreOperations<Stri
      * @return An {@link Optional} element of type {@link Entry}.
      */
     @Override
-    public Optional<Entry> get(Entry entry) {
+    public EntryOperationResponse get(Entry entry) {
+        LOGGER.debug("Start Debugging (Find Entry) ---- ");
+        EntryOperationResponse entryActionResponse = new EntryOperationResponse();
         Optional<String> valueOptional = Optional.ofNullable(entry)
                 .map(Entry::getValue);
-        return valueOptional.flatMap(s -> entryRepository.findById(s));
+        if (valueOptional.isPresent()) {
+            Optional<Entry> entryOpt = entryRepository.findById(valueOptional.get());
+            if (entryOpt.isPresent()) {
+                entryActionResponse.setEntry(entryOpt.get());
+                entryActionResponse.setSuccessfulOperation(true);
+            }
+        }
+        return entryActionResponse;
     }
 
     /**
@@ -145,11 +160,13 @@ public class EntryDataStoreOperationsService implements DataStoreOperations<Stri
      */
     @Override
     public Set<Entry> getAll() {
+        LOGGER.debug("Start Debugging (Find All Entry) ---- ");
         Set<Entry> entries = new HashSet<>();
         Iterable<Entry> entryIterable = entryRepository.findAll();
         for (Entry entry : entryIterable) {
             entries.add(entry);
         }
+        LOGGER.debug("End Debugging (Find All Entry) ---- ");
         return entries;
     }
 }

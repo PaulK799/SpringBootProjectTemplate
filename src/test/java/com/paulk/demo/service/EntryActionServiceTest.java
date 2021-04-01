@@ -3,7 +3,7 @@ package com.paulk.demo.service;
 import com.paulk.demo.dao.EntryDataStoreOperationsService;
 import com.paulk.demo.domain.input.EntryActionInput;
 import com.paulk.demo.domain.model.Entry;
-import com.paulk.demo.domain.model.EntryActionResponse;
+import com.paulk.demo.domain.model.EntryOperationResponse;
 import com.paulk.demo.utils.SetComparisonUtils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -17,7 +17,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.HashSet;
-import java.util.Optional;
 import java.util.Set;
 
 /**
@@ -53,11 +52,11 @@ public class EntryActionServiceTest {
     @Test
     public void addEntrySuccess() {
         // 1. Setup mocks.
-        EntryActionResponse entryActionResponse = new EntryActionResponse();
+        EntryOperationResponse entryActionResponse = new EntryOperationResponse();
         entryActionResponse.setSuccessfulOperation(true);
         Mockito.when(entryDataStoreOperationsService.add(Mockito.any())).thenReturn(entryActionResponse);
         // 2. Perform action
-        EntryActionResponse actualEntryActionResponse = entryActionService.addEntry(entryActionInput);
+        EntryOperationResponse actualEntryActionResponse = entryActionService.addEntry(entryActionInput);
         // 3. Assert results.
         Assertions.assertTrue(actualEntryActionResponse.isSuccessfulOperation(), "Assert add operation behavior is correct.");
     }
@@ -68,10 +67,10 @@ public class EntryActionServiceTest {
     @Test
     public void addEntryFailure() {
         // 1. Setup mocks.
-        EntryActionResponse entryActionResponse = new EntryActionResponse();
+        EntryOperationResponse entryActionResponse = new EntryOperationResponse();
         Mockito.when(entryDataStoreOperationsService.add(Mockito.any())).thenReturn(entryActionResponse);
         // 2. Perform action
-        EntryActionResponse actualEntryActionResponse = entryActionService.addEntry(entryActionInput);
+        EntryOperationResponse actualEntryActionResponse = entryActionService.addEntry(entryActionInput);
         // 3. Assert results.
         Assertions.assertFalse(actualEntryActionResponse.isSuccessfulOperation(), "Assert add operation behavior is correct.");
     }
@@ -82,10 +81,10 @@ public class EntryActionServiceTest {
     @Test
     public void deleteEntryFailure() {
         // 1. Setup mocks.
-        EntryActionResponse entryActionResponse = new EntryActionResponse();
+        EntryOperationResponse entryActionResponse = new EntryOperationResponse();
         Mockito.when(entryDataStoreOperationsService.delete(Mockito.any())).thenReturn(entryActionResponse);
         // 2. Perform action
-        EntryActionResponse actualEntryActionResponse = entryActionService.deleteEntry(entryActionInput);
+        EntryOperationResponse actualEntryActionResponse = entryActionService.deleteEntry(entryActionInput);
         // 3. Assert results.
         Assertions.assertFalse(actualEntryActionResponse.isSuccessfulOperation(), "Assert add operation behavior is correct when a duplicate already exists.");
     }
@@ -96,11 +95,11 @@ public class EntryActionServiceTest {
     @Test
     public void deleteEntrySuccess() {
         // 1. Setup mocks.
-        EntryActionResponse entryActionResponse = new EntryActionResponse();
+        EntryOperationResponse entryActionResponse = new EntryOperationResponse();
         entryActionResponse.setSuccessfulOperation(true);
         Mockito.when(entryDataStoreOperationsService.delete(Mockito.any())).thenReturn(entryActionResponse);
         // 2. Perform action
-        EntryActionResponse actualEntryActionResponse  = entryActionService.deleteEntry(entryActionInput);
+        EntryOperationResponse actualEntryActionResponse = entryActionService.deleteEntry(entryActionInput);
         // 3. Assert results.
         Assertions.assertTrue(actualEntryActionResponse.isSuccessfulOperation(), "Assert delete operation behavior is correct.");
     }
@@ -111,14 +110,14 @@ public class EntryActionServiceTest {
     @Test
     public void updateEntrySuccess() {
         // 1. Setup mocks.
-        EntryActionResponse entryActionResponse = new EntryActionResponse();
+        EntryOperationResponse entryActionResponse = new EntryOperationResponse();
         entryActionResponse.setEntry(entry);
         entryActionResponse.setSuccessfulOperation(true);
         Mockito.when(entryDataStoreOperationsService.update(Mockito.any(), Mockito.any())).thenReturn(entryActionResponse);
         // 2. Perform action
-        EntryActionResponse actualEntryActionResponse = entryActionService.updateEntry(entryActionInput);
+        EntryOperationResponse actualEntryActionResponse = entryActionService.updateEntry(entryActionInput);
         // 3. Assert results.
-        Assertions.assertEquals(entry, actualEntryActionResponse.getEntry() , "Assert update operation behavior is correct.");
+        Assertions.assertEquals(entry, actualEntryActionResponse.getEntry(), "Assert update operation behavior is correct.");
     }
 
     /**
@@ -126,13 +125,13 @@ public class EntryActionServiceTest {
      */
     @Test
     public void updateEntryNoKeyExistsSuccess() {
-        EntryActionResponse entryActionResponse = new EntryActionResponse();
+        EntryOperationResponse entryActionResponse = new EntryOperationResponse();
         // 1. Setup mocks.
         Mockito.when(entryDataStoreOperationsService.update(Mockito.any(), Mockito.any())).thenReturn(entryActionResponse);
         // 2. Perform action
-        EntryActionResponse actualEntryActionResponse = entryActionService.updateEntry(entryActionInput);
+        EntryOperationResponse actualEntryActionResponse = entryActionService.updateEntry(entryActionInput);
         // 3. Assert results.
-        Assertions.assertNull(actualEntryActionResponse.getEntry() , "Assert update operation behavior is correct.");
+        Assertions.assertNull(actualEntryActionResponse.getEntry(), "Assert update operation behavior is correct.");
     }
 
     /**
@@ -140,12 +139,15 @@ public class EntryActionServiceTest {
      */
     @Test
     public void getEntrySuccess() {
+        EntryOperationResponse entryActionResponse = new EntryOperationResponse();
+        entryActionResponse.setEntry(entry);
+        entryActionResponse.setSuccessfulOperation(true);
         // 1. Setup mocks.
-        Mockito.when(entryDataStoreOperationsService.get(Mockito.any())).thenReturn(Optional.of(entry));
+        Mockito.when(entryDataStoreOperationsService.get(Mockito.any())).thenReturn(entryActionResponse);
         // 2. Perform action
-        Optional<Entry> actualEntries = entryActionService.getEntry(entryActionInput);
+        EntryOperationResponse actualOperationResponse = entryActionService.getEntry(entryActionInput);
         // 3. Assert results.
-        Assertions.assertEquals(Optional.of(entry), actualEntries , "Assert get operation behavior is correct.");
+        Assertions.assertEquals(entry, actualOperationResponse.getEntry(), "Assert get operation behavior is correct.");
     }
 
     /**
@@ -153,12 +155,13 @@ public class EntryActionServiceTest {
      */
     @Test
     public void getEntryFailure() {
+        EntryOperationResponse entryActionResponse = new EntryOperationResponse();
         // 1. Setup mocks.
-        Mockito.when(entryDataStoreOperationsService.get(Mockito.any())).thenReturn(Optional.empty());
+        Mockito.when(entryDataStoreOperationsService.get(Mockito.any())).thenReturn(entryActionResponse);
         // 2. Perform action
-        Optional<Entry> actualEntries = entryActionService.getEntry(entryActionInput);
+        EntryOperationResponse actualOperationResponse = entryActionService.getEntry(entryActionInput);
         // 3. Assert results.
-        Assertions.assertEquals(Optional.empty(), actualEntries , "Assert get operation behavior is correct.");
+        Assertions.assertNull(actualOperationResponse.getEntry(), "Assert get operation behavior is correct.");
     }
 
     /**

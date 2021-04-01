@@ -1,10 +1,7 @@
 package com.paulk.demo.dao;
 
 import com.paulk.demo.domain.model.Entry;
-import com.paulk.demo.domain.model.EntryActionResponse;
-import org.springframework.cache.annotation.CacheConfig;
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.Cacheable;
+import com.paulk.demo.domain.model.EntryOperationResponse;
 
 import java.util.Collection;
 import java.util.Optional;
@@ -16,7 +13,6 @@ import java.util.Set;
  * @param <K> - The key of the {@link V} being processed.
  * @param <V> - The {@link V} to be stored in the data store.
  */
-@CacheConfig(cacheNames = {"entries"})
 public interface DataStoreOperations<K, V> {
 
     /**
@@ -25,8 +21,7 @@ public interface DataStoreOperations<K, V> {
      * @param entry - The {@link V} to be added.
      * @return If true, {@link V} added successfully, else {@link V} already exists.
      */
-    @CacheEvict(value = "entries", allEntries = true)
-    public EntryActionResponse add(Entry entry);
+    public EntryOperationResponse add(Entry entry);
 
     /**
      * Remove an {@link V} to the data store.
@@ -34,8 +29,7 @@ public interface DataStoreOperations<K, V> {
      * @param entry - The {@link V} to be deleted.
      * @return If true, {@link V} removed successfully, else {@link V} doesn't exists.
      */
-    @CacheEvict(value = "entries", allEntries = true)
-    public EntryActionResponse delete(V entry);
+    public EntryOperationResponse delete(V entry);
 
     /**
      * Update an existing {@link V} in the data store.
@@ -44,8 +38,7 @@ public interface DataStoreOperations<K, V> {
      * @param entry - The {@link V} to be updated.
      * @return If true, {@link V} removed successfully, else {@link V} doesn't exists.
      */
-    @CacheEvict(value = "entries", allEntries = true)
-    public EntryActionResponse update(K key, V entry);
+    public EntryOperationResponse update(K key, V entry);
 
     /**
      * Remove an {@link V} to the data store.
@@ -53,14 +46,12 @@ public interface DataStoreOperations<K, V> {
      * @param entry - The {@link V} to be retrieved.
      * @return An {@link Optional} element of type {@link V}.
      */
-    @Cacheable(value = "entries")
-    public Optional<V> get(V entry);
+    public EntryOperationResponse get(V entry);
 
     /**
      * Get a {@link Collection} of all {@link V} in the data store.
      *
      * @return A
      */
-    @Cacheable(value = "entries")
     public Set<V> getAll();
 }

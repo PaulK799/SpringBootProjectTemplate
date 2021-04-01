@@ -7,10 +7,10 @@ import java.util.Objects;
 /**
  * A wrapper for {@link EntryResponse} for processing operations.
  */
-public class EntryActionResponse extends EntryResponse {
+public class EntryOperationResponse extends EntryResponse {
     private boolean successfulOperation;
 
-    public EntryActionResponse() {
+    public EntryOperationResponse() {
         super();
         successfulOperation = false;
     }
@@ -34,10 +34,10 @@ public class EntryActionResponse extends EntryResponse {
     }
 
     /**
-     * Implements object comparison for a {@link EntryActionResponse}.
+     * Implements object comparison for a {@link EntryOperationResponse}.
      *
      * @param obj - The {@link Object} being parsed.
-     * @return A boolean indicating if equals to {@link EntryActionResponse}.
+     * @return A boolean indicating if equals to {@link EntryOperationResponse}.
      */
     @Override
     public boolean equals(Object obj) {
@@ -49,16 +49,16 @@ public class EntryActionResponse extends EntryResponse {
             return false;
         }
 
-        EntryActionResponse that = (EntryActionResponse) obj;
+        EntryOperationResponse that = (EntryOperationResponse) obj;
         return Objects.equals(this.entry, that.entry) &&
                 Objects.equals(this.error, that.error) &&
                 Objects.equals(this.successfulOperation, that.successfulOperation);
     }
 
     /**
-     * Returns the hashCode for the {@link EntryActionResponse} based on the 'entry' and 'error'.
+     * Returns the hashCode for the {@link EntryOperationResponse} based on the 'entry' and 'error'.
      *
-     * @return The hashcode for the {@link EntryActionResponse}.
+     * @return The hashcode for the {@link EntryOperationResponse}.
      */
     @Override
     public int hashCode() {
@@ -67,9 +67,9 @@ public class EntryActionResponse extends EntryResponse {
 
 
     /**
-     * Implementation of toString for an {@link EntryActionResponse}.
+     * Implementation of toString for an {@link EntryOperationResponse}.
      *
-     * @return The {@link String} representation for an {@link EntryActionResponse}.
+     * @return The {@link String} representation for an {@link EntryOperationResponse}.
      */
     @Override
     public String toString() {

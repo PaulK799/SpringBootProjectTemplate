@@ -2,7 +2,7 @@ package com.paulk.demo.controller;
 
 import com.paulk.demo.domain.input.EntryActionInput;
 import com.paulk.demo.domain.model.Entry;
-import com.paulk.demo.domain.model.EntryActionResponse;
+import com.paulk.demo.domain.model.EntryOperationResponse;
 import com.paulk.demo.service.EntryActionService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -20,7 +20,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.util.HashSet;
-import java.util.Optional;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
@@ -69,10 +68,10 @@ public class EntriesControllerTest {
      */
     @Test
     public void addEntrySuccess() throws Exception {
-        EntryActionResponse entryActionResponse = new EntryActionResponse();
-        entryActionResponse.setSuccessfulOperation(true);
+        EntryOperationResponse operationResponse = new EntryOperationResponse();
+        operationResponse.setSuccessfulOperation(true);
 
-        Mockito.when(actionService.addEntry(any(EntryActionInput.class))).thenReturn(entryActionResponse);
+        Mockito.when(actionService.addEntry(any(EntryActionInput.class))).thenReturn(operationResponse);
 
         this.mockMvc.perform(post("/entries/entry")
                 .content(entryActionInput.toString())
@@ -89,8 +88,8 @@ public class EntriesControllerTest {
      */
     @Test
     public void addEntryInvalid() throws Exception {
-        EntryActionResponse entryActionResponse = new EntryActionResponse();
-        Mockito.when(actionService.addEntry(any(EntryActionInput.class))).thenReturn(entryActionResponse);
+        EntryOperationResponse operationResponse = new EntryOperationResponse();
+        Mockito.when(actionService.addEntry(any(EntryActionInput.class))).thenReturn(operationResponse);
 
         this.mockMvc.perform(post("/entries/entry")
                 .content(entryActionInput.toString())
@@ -122,9 +121,9 @@ public class EntriesControllerTest {
     @Test
     public void deleteEntrySuccess() throws Exception {
 
-        EntryActionResponse entryActionResponse = new EntryActionResponse();
-        entryActionResponse.setSuccessfulOperation(true);
-        Mockito.when(actionService.deleteEntry(any(EntryActionInput.class))).thenReturn(entryActionResponse);
+        EntryOperationResponse operationResponse = new EntryOperationResponse();
+        operationResponse.setSuccessfulOperation(true);
+        Mockito.when(actionService.deleteEntry(any(EntryActionInput.class))).thenReturn(operationResponse);
 
         this.mockMvc.perform(delete("/entries/entry")
                 .content(entryActionInput.toString())
@@ -141,8 +140,8 @@ public class EntriesControllerTest {
      */
     @Test
     public void deleteEntryInvalid() throws Exception {
-        EntryActionResponse entryActionResponse = new EntryActionResponse();
-        Mockito.when(actionService.deleteEntry(any(EntryActionInput.class))).thenReturn(entryActionResponse);
+        EntryOperationResponse operationResponse = new EntryOperationResponse();
+        Mockito.when(actionService.deleteEntry(any(EntryActionInput.class))).thenReturn(operationResponse);
 
         this.mockMvc.perform(delete("/entries/entry")
                 .content(entryActionInput.toString())
@@ -174,10 +173,10 @@ public class EntriesControllerTest {
     @Test
     public void updateEntrySuccess() throws Exception {
 
-        EntryActionResponse entryActionResponse = new EntryActionResponse();
-        entryActionResponse.setEntry(entry);
-        entryActionResponse.setSuccessfulOperation(true);
-        Mockito.when(actionService.updateEntry(any(EntryActionInput.class))).thenReturn(entryActionResponse);
+        EntryOperationResponse operationResponse = new EntryOperationResponse();
+        operationResponse.setEntry(entry);
+        operationResponse.setSuccessfulOperation(true);
+        Mockito.when(actionService.updateEntry(any(EntryActionInput.class))).thenReturn(operationResponse);
 
         this.mockMvc.perform(put("/entries/entry")
                 .content(entryActionInput.toString())
@@ -194,9 +193,8 @@ public class EntriesControllerTest {
      */
     @Test
     public void updateEntryInvalid() throws Exception {
-        EntryActionResponse entryActionResponse = new EntryActionResponse();
-        entryActionResponse.setSuccessfulOperation(false);
-        Mockito.when(actionService.updateEntry(any(EntryActionInput.class))).thenReturn(entryActionResponse);
+        EntryOperationResponse operationResponse = new EntryOperationResponse();
+        Mockito.when(actionService.updateEntry(any(EntryActionInput.class))).thenReturn(operationResponse);
 
         this.mockMvc.perform(put("/entries/entry")
                 .content(entryActionInput.toString())
@@ -227,8 +225,10 @@ public class EntriesControllerTest {
      */
     @Test
     public void getEntrySuccess() throws Exception {
-
-        Mockito.when(actionService.getEntry(any(EntryActionInput.class))).thenReturn(Optional.of(entry));
+        EntryOperationResponse entryActionResponse = new EntryOperationResponse();
+        entryActionResponse.setSuccessfulOperation(true);
+        entryActionResponse.setEntry(entry);
+        Mockito.when(actionService.getEntry(any(EntryActionInput.class))).thenReturn(entryActionResponse);
 
         this.mockMvc.perform(get("/entries/entry/{value}/id/{id}", "test", "1234")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -244,8 +244,8 @@ public class EntriesControllerTest {
      */
     @Test
     public void getEntryInvalid() throws Exception {
-
-        Mockito.when(actionService.getEntry(any(EntryActionInput.class))).thenReturn(Optional.empty());
+        EntryOperationResponse entryActionResponse = new EntryOperationResponse();
+        Mockito.when(actionService.getEntry(any(EntryActionInput.class))).thenReturn(entryActionResponse);
 
         this.mockMvc.perform(get("/entries/entry/{value}/id/{id}", "test", "1234")
                 .contentType(MediaType.APPLICATION_JSON)

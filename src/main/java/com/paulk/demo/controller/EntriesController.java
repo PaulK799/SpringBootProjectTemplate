@@ -4,7 +4,7 @@ import com.paulk.demo.constants.ErrorCodes;
 import com.paulk.demo.domain.input.EntryActionInput;
 import com.paulk.demo.domain.model.EntriesResponse;
 import com.paulk.demo.domain.model.Entry;
-import com.paulk.demo.domain.model.EntryActionResponse;
+import com.paulk.demo.domain.model.EntryOperationResponse;
 import com.paulk.demo.domain.model.EntryResponse;
 import com.paulk.demo.domain.model.Error;
 import com.paulk.demo.service.EntryActionService;
@@ -62,9 +62,9 @@ public class EntriesController {
         Optional<Entry> entryOptional = Optional.ofNullable(actionInput)
                 .map(EntryActionInput::getEntry);
         if (entryOptional.isPresent()) {
-            EntryActionResponse entryActionResponse = entryActionService.addEntry(actionInput);
+            EntryOperationResponse operationResponse = entryActionService.addEntry(actionInput);
 
-            if (entryActionResponse.isSuccessfulOperation()) {
+            if (operationResponse.isSuccessfulOperation()) {
                 // Add the added Entry
                 entryResponse.setEntry(actionInput.getEntry());
                 return new ResponseEntity<>(entryResponse, HttpStatus.CREATED);
@@ -93,11 +93,11 @@ public class EntriesController {
         Optional<Entry> entryOptional = Optional.ofNullable(actionInput)
                 .map(EntryActionInput::getEntry);
         if (entryOptional.isPresent()) {
-            EntryActionResponse entryActionResponse = entryActionService.deleteEntry(actionInput);
+            EntryOperationResponse operationResponse = entryActionService.deleteEntry(actionInput);
 
-            if (entryActionResponse.isSuccessfulOperation()) {
+            if (operationResponse.isSuccessfulOperation()) {
                 // Delete the Entry
-                entryResponse.setEntry(entryActionResponse.getEntry());
+                entryResponse.setEntry(operationResponse.getEntry());
                 return new ResponseEntity<>(entryResponse, HttpStatus.OK);
             } else {
                 // Add in error to indicate Entry could not be added successfully.
@@ -127,11 +127,11 @@ public class EntriesController {
         if (entryOptional.isPresent() && keyOptional.isPresent()) {
             EntryResponse entryResponse = new EntryResponse();
             model.addAttribute(ENTRY_RESPONSE_ATTRIBUTE, entryResponse);
-            EntryActionResponse entryActionResponse = entryActionService.updateEntry(actionInput);
+            EntryOperationResponse operationResponse = entryActionService.updateEntry(actionInput);
 
-            if (entryActionResponse.isSuccessfulOperation()) {
+            if (operationResponse.isSuccessfulOperation()) {
                 // Add the added Entry
-                entryResponse.setEntry(entryActionResponse.getEntry() );
+                entryResponse.setEntry(operationResponse.getEntry() );
                 return new ResponseEntity<>(entryResponse, HttpStatus.OK);
             } else {
                 // Add in error to indicate Entry could not be added successfully.
@@ -163,9 +163,9 @@ public class EntriesController {
                     .build();
 
             // Perform Action
-            Optional<Entry> entryOptional = entryActionService.getEntry(actionInput);
-            if (entryOptional.isPresent()) {
-                entryResponse.setEntry(entryOptional.get());
+            EntryOperationResponse operationResponse = entryActionService.getEntry(actionInput);
+            if (operationResponse.isSuccessfulOperation()) {
+                entryResponse.setEntry(operationResponse.getEntry());
                 return new ResponseEntity<>(entryResponse, HttpStatus.OK);
             } else {
                 return EntryResponse.generateEntryResponseError(ErrorCodes.NOT_FOUND, ErrorCodes.NOT_FOUND_DESCRIPTION, HttpStatus.NOT_FOUND);
