@@ -1,5 +1,6 @@
 package com.paulk.demo.controller;
 
+import com.paulk.demo.comparator.EntryComparator;
 import com.paulk.demo.constants.ErrorCodes;
 import com.paulk.demo.domain.input.EntryActionInput;
 import com.paulk.demo.domain.model.EntriesResponse;
@@ -22,7 +23,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 /**
  * Defines a {@link Controller}  which defines a set of CRUD Operations.
@@ -187,7 +192,12 @@ public class EntriesController {
         // Setup
         EntriesResponse entriesResponse = new EntriesResponse();
         model.addAttribute(ENTRY_RESPONSE_ATTRIBUTE, entriesResponse);
+        List<Entry> entries = entriesResponse.getEntries();
         entriesResponse.getEntries().addAll(entryActionService.getAllEntries());
+
+        // Sort with Comparator.
+        entries.sort(new EntryComparator());
+
         if (!entriesResponse.getEntries().isEmpty()) {
             return new ResponseEntity<>(entriesResponse, HttpStatus.OK);
         } else {

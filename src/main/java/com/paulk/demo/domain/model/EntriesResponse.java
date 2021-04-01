@@ -6,13 +6,13 @@ import org.springframework.http.ResponseEntity;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Collection;
+import java.util.List;
 import java.util.Objects;
 
 public class EntriesResponse implements Serializable {
     private static final long serialVersionUID = 4L;
 
-    private Collection<Entry> entries;
+    private List<Entry> entries;
     private Error error;
 
     /**
@@ -28,7 +28,7 @@ public class EntriesResponse implements Serializable {
      *
      * @return The {@link Entry}.
      */
-    public Collection<Entry> getEntries() {
+    public List<Entry> getEntries() {
         if (entries == null) {
             entries = new ArrayList<>();
         }
