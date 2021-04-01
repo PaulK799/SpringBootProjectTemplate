@@ -1,8 +1,8 @@
 package com.paulk.demo.dao;
 
 import com.paulk.demo.domain.model.Entry;
+import com.paulk.demo.domain.model.EntryActionResponse;
 import com.paulk.demo.repository.EntryRepository;
-import com.paulk.demo.utils.EntryWrapperContext;
 import com.paulk.demo.utils.SetComparisonUtils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -12,7 +12,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
-import org.mockito.Spy;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
@@ -29,9 +28,6 @@ public class EntryDataStoreOperationsServiceTest {
 
     @Mock
     EntryRepository entryRepository;
-
-    @Spy
-    private EntryWrapperContext entryWrapperContext;
 
     @InjectMocks
     EntryDataStoreOperationsService entryDataStoreOperationsService;
@@ -52,9 +48,9 @@ public class EntryDataStoreOperationsServiceTest {
         Mockito.when(entryRepository.findById(Mockito.any())).thenReturn(Optional.empty());
         Mockito.when(entryRepository.save(Mockito.any())).thenReturn(entry);
         // 3. Perform action
-        boolean operationSuccessful = entryDataStoreOperationsService.add(entry);
+        EntryActionResponse entryActionResponse = entryDataStoreOperationsService.add(entry);
         // 4. Assert results.
-        Assertions.assertTrue(operationSuccessful, "Assert add operation behavior is correct.");
+        Assertions.assertTrue(entryActionResponse.isSuccessfulOperation(), "Assert add operation behavior is correct.");
     }
 
     /**
@@ -68,9 +64,9 @@ public class EntryDataStoreOperationsServiceTest {
         Mockito.when(entryRepository.findById(Mockito.any())).thenReturn(Optional.empty());
         Mockito.when(entryRepository.save(Mockito.any())).thenThrow(IllegalArgumentException.class);
         // 3. Perform action
-        boolean operationSuccessful = entryDataStoreOperationsService.add(entry);
+        EntryActionResponse entryActionResponse = entryDataStoreOperationsService.add(entry);
         // 4. Assert results.
-        Assertions.assertFalse(operationSuccessful, "Assert add operation behavior is correct.");
+        Assertions.assertFalse(entryActionResponse.isSuccessfulOperation(), "Assert add operation behavior is correct.");
     }
 
     /**
@@ -83,9 +79,9 @@ public class EntryDataStoreOperationsServiceTest {
         // 2. Setup mocks.
         Mockito.when(entryRepository.findById(Mockito.any())).thenReturn(Optional.of(entry));
         // 3. Perform action
-        boolean operationSuccessful = entryDataStoreOperationsService.add(entry);
+        EntryActionResponse entryActionResponse = entryDataStoreOperationsService.add(entry);
         // 4. Assert results.
-        Assertions.assertFalse(operationSuccessful, "Assert add operation behavior is correct when a duplicate already exists.");
+        Assertions.assertFalse(entryActionResponse.isSuccessfulOperation(), "Assert add operation behavior is correct when a duplicate already exists.");
     }
 
     /**
@@ -98,9 +94,9 @@ public class EntryDataStoreOperationsServiceTest {
         // 2. Setup mocks.
         Mockito.when(entryRepository.findById(Mockito.any())).thenReturn(Optional.of(entry));
         // 3. Perform action
-        boolean operationSuccessful = entryDataStoreOperationsService.delete(entry);
+        EntryActionResponse entryActionResponse = entryDataStoreOperationsService.delete(entry);
         // 4. Assert results.
-        Assertions.assertTrue(operationSuccessful, "Assert delete operation behavior is correct.");
+        Assertions.assertTrue(entryActionResponse.isSuccessfulOperation(), "Assert delete operation behavior is correct.");
     }
 
     /**
@@ -113,9 +109,9 @@ public class EntryDataStoreOperationsServiceTest {
         // 2. Setup mocks.
         Mockito.when(entryRepository.findById(Mockito.any())).thenReturn(Optional.empty());
         // 3. Perform action
-        boolean operationSuccessful = entryDataStoreOperationsService.delete(entry);
+        EntryActionResponse entryActionResponse = entryDataStoreOperationsService.delete(entry);
         // 4. Assert results.
-        Assertions.assertFalse(operationSuccessful, "Assert delete operation behavior is correct.");
+        Assertions.assertFalse(entryActionResponse.isSuccessfulOperation(), "Assert delete operation behavior is correct.");
     }
 
     /**
@@ -130,9 +126,9 @@ public class EntryDataStoreOperationsServiceTest {
         Mockito.when(entryRepository.findById(Mockito.any())).thenReturn(Optional.of(entry));
         Mockito.when(entryRepository.save(Mockito.any())).thenReturn(updatedEntry);
         // 3. Perform action
-        Optional<Entry> actualEntry = entryDataStoreOperationsService.update(entry.getValue(), updatedEntry);
+        EntryActionResponse entryActionResponse = entryDataStoreOperationsService.update(entry.getValue(), updatedEntry);
         // 4. Assert results.
-        Assertions.assertEquals(updatedEntry, actualEntry.get() , "Assert update operation behavior is correct.");
+        Assertions.assertEquals(updatedEntry, entryActionResponse.getEntry() , "Assert update operation behavior is correct.");
     }
 
     /**
@@ -146,9 +142,9 @@ public class EntryDataStoreOperationsServiceTest {
         // 2. Setup mocks.
         Mockito.when(entryRepository.findById(Mockito.any())).thenReturn(Optional.empty());
         // 3. Perform action
-        Optional<Entry> actualEntry = entryDataStoreOperationsService.update(entry.getValue(), updatedEntry);
+        EntryActionResponse entryActionResponse = entryDataStoreOperationsService.update(entry.getValue(), updatedEntry);
         // 4. Assert results.
-        Assertions.assertEquals(Optional.empty(), actualEntry , "Assert update operation behavior is correct.");
+        Assertions.assertNull(entryActionResponse.getEntry() , "Assert update operation behavior is correct.");
     }
 
     /**
@@ -163,9 +159,9 @@ public class EntryDataStoreOperationsServiceTest {
         Mockito.when(entryRepository.findById(Mockito.any())).thenReturn(Optional.of(entry));
         Mockito.when(entryRepository.save(Mockito.any())).thenReturn(null);
         // 3. Perform action
-        Optional<Entry> actualEntry = entryDataStoreOperationsService.update(entry.getValue(), updatedEntry);
+        EntryActionResponse entryActionResponse = entryDataStoreOperationsService.update(entry.getValue(), updatedEntry);
         // 4. Assert results.
-        Assertions.assertEquals(Optional.empty(), actualEntry , "Assert update operation behavior is correct.");
+        Assertions.assertNull(entryActionResponse.getEntry() , "Assert update operation behavior is correct.");
     }
 
     /**

@@ -4,10 +4,10 @@ import com.paulk.demo.constants.ErrorCodes;
 import com.paulk.demo.domain.input.EntryActionInput;
 import com.paulk.demo.domain.model.EntriesResponse;
 import com.paulk.demo.domain.model.Entry;
+import com.paulk.demo.domain.model.EntryActionResponse;
 import com.paulk.demo.domain.model.EntryResponse;
 import com.paulk.demo.domain.model.Error;
 import com.paulk.demo.service.EntryActionService;
-import com.paulk.demo.utils.EntryWrapperContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -36,9 +36,6 @@ public class EntriesController {
     @Autowired
     protected EntryActionService entryActionService;
 
-    @Autowired
-    private EntryWrapperContext entryWrapperContext;
-
 
     /**
      * Exception handler for {@link HttpMessageNotReadableException} when the {@link RequestBody} cannot be read.
@@ -65,9 +62,9 @@ public class EntriesController {
         Optional<Entry> entryOptional = Optional.ofNullable(actionInput)
                 .map(EntryActionInput::getEntry);
         if (entryOptional.isPresent()) {
-            boolean isSuccess = entryActionService.addEntry(actionInput);
+            EntryActionResponse entryActionResponse = entryActionService.addEntry(actionInput);
 
-            if (isSuccess) {
+            if (entryActionResponse.isSuccessfulOperation()) {
                 // Add the added Entry
                 entryResponse.setEntry(actionInput.getEntry());
                 return new ResponseEntity<>(entryResponse, HttpStatus.CREATED);
@@ -96,16 +93,11 @@ public class EntriesController {
         Optional<Entry> entryOptional = Optional.ofNullable(actionInput)
                 .map(EntryActionInput::getEntry);
         if (entryOptional.isPresent()) {
-            boolean isSuccess = entryActionService.deleteEntry(actionInput);
+            EntryActionResponse entryActionResponse = entryActionService.deleteEntry(actionInput);
 
-            if (isSuccess) {
+            if (entryActionResponse.isSuccessfulOperation()) {
                 // Delete the Entry
-                Entry retrievedEntry = entryWrapperContext.getEntry();
-                if (retrievedEntry != null) {
-                    entryResponse.setEntry(retrievedEntry);
-                } else {
-                    entryResponse.setEntry(entryOptional.get());
-                }
+                entryResponse.setEntry(entryActionResponse.getEntry());
                 return new ResponseEntity<>(entryResponse, HttpStatus.OK);
             } else {
                 // Add in error to indicate Entry could not be added successfully.
@@ -135,11 +127,11 @@ public class EntriesController {
         if (entryOptional.isPresent() && keyOptional.isPresent()) {
             EntryResponse entryResponse = new EntryResponse();
             model.addAttribute(ENTRY_RESPONSE_ATTRIBUTE, entryResponse);
-            entryOptional = entryActionService.updateEntry(actionInput);
+            EntryActionResponse entryActionResponse = entryActionService.updateEntry(actionInput);
 
-            if (entryOptional.isPresent()) {
+            if (entryActionResponse.isSuccessfulOperation()) {
                 // Add the added Entry
-                entryResponse.setEntry(entryOptional.get());
+                entryResponse.setEntry(entryActionResponse.getEntry() );
                 return new ResponseEntity<>(entryResponse, HttpStatus.OK);
             } else {
                 // Add in error to indicate Entry could not be added successfully.

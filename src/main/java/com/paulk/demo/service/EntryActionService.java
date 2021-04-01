@@ -4,6 +4,7 @@ import com.paulk.demo.dao.DataStoreOperations;
 import com.paulk.demo.dao.EntryDataStoreOperationsService;
 import com.paulk.demo.domain.input.EntryActionInput;
 import com.paulk.demo.domain.model.Entry;
+import com.paulk.demo.domain.model.EntryActionResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,7 +26,7 @@ public class EntryActionService {
      * @param entryActionInput - The {@link EntryActionInput} to be processed.
      * @return If true, {@link Entry} added successfully. Otherwise false if failed to save.
      */
-    public boolean addEntry(EntryActionInput entryActionInput) {
+    public EntryActionResponse addEntry(EntryActionInput entryActionInput) {
         return entryDataStoreOperationsService.add(entryActionInput.getEntry());
     }
 
@@ -35,7 +36,7 @@ public class EntryActionService {
      * @param entryActionInput - The {@link EntryActionInput} to be processed.
      * @return A {@link Optional} of type {@link Entry}.
      */
-    public Optional<Entry> updateEntry(EntryActionInput entryActionInput) {
+    public EntryActionResponse updateEntry(EntryActionInput entryActionInput) {
         return entryDataStoreOperationsService.update(entryActionInput.getKey(), entryActionInput.getEntry());
     }
 
@@ -45,7 +46,7 @@ public class EntryActionService {
      * @param entryActionInput - The {@link EntryActionInput} to be processed.
      * @return If true, {@link Entry} deleted successfully. Otherwise false if failed to delete.
      */
-    public boolean deleteEntry(EntryActionInput entryActionInput) {
+    public EntryActionResponse deleteEntry(EntryActionInput entryActionInput) {
         return entryDataStoreOperationsService.delete(entryActionInput.getEntry());
     }
 

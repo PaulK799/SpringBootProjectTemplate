@@ -10,8 +10,8 @@ import java.util.Objects;
 public class EntryResponse implements Serializable {
     private static final long serialVersionUID = 2L;
 
-    private Entry entry;
-    private Error error;
+    protected Entry entry;
+    protected Error error;
 
     /**
      * Default Constructor for {@link EntryResponse}.

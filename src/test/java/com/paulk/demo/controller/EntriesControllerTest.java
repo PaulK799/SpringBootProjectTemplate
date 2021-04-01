@@ -2,8 +2,8 @@ package com.paulk.demo.controller;
 
 import com.paulk.demo.domain.input.EntryActionInput;
 import com.paulk.demo.domain.model.Entry;
+import com.paulk.demo.domain.model.EntryActionResponse;
 import com.paulk.demo.service.EntryActionService;
-import com.paulk.demo.utils.EntryWrapperContext;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -11,7 +11,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
-import org.mockito.Spy;
 import org.mockito.internal.util.collections.Sets;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -42,9 +41,6 @@ public class EntriesControllerTest {
     @Mock
     private EntryActionService actionService;
 
-    @Spy
-    private EntryWrapperContext entryWrapperContext;
-
     @InjectMocks
     private EntriesController entriesController;
 
@@ -73,8 +69,10 @@ public class EntriesControllerTest {
      */
     @Test
     public void addEntrySuccess() throws Exception {
+        EntryActionResponse entryActionResponse = new EntryActionResponse();
+        entryActionResponse.setSuccessfulOperation(true);
 
-        Mockito.when(actionService.addEntry(any(EntryActionInput.class))).thenReturn(true);
+        Mockito.when(actionService.addEntry(any(EntryActionInput.class))).thenReturn(entryActionResponse);
 
         this.mockMvc.perform(post("/entries/entry")
                 .content(entryActionInput.toString())
@@ -91,8 +89,8 @@ public class EntriesControllerTest {
      */
     @Test
     public void addEntryInvalid() throws Exception {
-
-        Mockito.when(actionService.addEntry(any(EntryActionInput.class))).thenReturn(false);
+        EntryActionResponse entryActionResponse = new EntryActionResponse();
+        Mockito.when(actionService.addEntry(any(EntryActionInput.class))).thenReturn(entryActionResponse);
 
         this.mockMvc.perform(post("/entries/entry")
                 .content(entryActionInput.toString())
@@ -124,7 +122,9 @@ public class EntriesControllerTest {
     @Test
     public void deleteEntrySuccess() throws Exception {
 
-        Mockito.when(actionService.deleteEntry(any(EntryActionInput.class))).thenReturn(true);
+        EntryActionResponse entryActionResponse = new EntryActionResponse();
+        entryActionResponse.setSuccessfulOperation(true);
+        Mockito.when(actionService.deleteEntry(any(EntryActionInput.class))).thenReturn(entryActionResponse);
 
         this.mockMvc.perform(delete("/entries/entry")
                 .content(entryActionInput.toString())
@@ -141,8 +141,8 @@ public class EntriesControllerTest {
      */
     @Test
     public void deleteEntryInvalid() throws Exception {
-
-        Mockito.when(actionService.deleteEntry(any(EntryActionInput.class))).thenReturn(false);
+        EntryActionResponse entryActionResponse = new EntryActionResponse();
+        Mockito.when(actionService.deleteEntry(any(EntryActionInput.class))).thenReturn(entryActionResponse);
 
         this.mockMvc.perform(delete("/entries/entry")
                 .content(entryActionInput.toString())
@@ -174,7 +174,10 @@ public class EntriesControllerTest {
     @Test
     public void updateEntrySuccess() throws Exception {
 
-        Mockito.when(actionService.updateEntry(any(EntryActionInput.class))).thenReturn(Optional.of(entry));
+        EntryActionResponse entryActionResponse = new EntryActionResponse();
+        entryActionResponse.setEntry(entry);
+        entryActionResponse.setSuccessfulOperation(true);
+        Mockito.when(actionService.updateEntry(any(EntryActionInput.class))).thenReturn(entryActionResponse);
 
         this.mockMvc.perform(put("/entries/entry")
                 .content(entryActionInput.toString())
@@ -191,8 +194,9 @@ public class EntriesControllerTest {
      */
     @Test
     public void updateEntryInvalid() throws Exception {
-
-        Mockito.when(actionService.updateEntry(any(EntryActionInput.class))).thenReturn(Optional.empty());
+        EntryActionResponse entryActionResponse = new EntryActionResponse();
+        entryActionResponse.setSuccessfulOperation(false);
+        Mockito.when(actionService.updateEntry(any(EntryActionInput.class))).thenReturn(entryActionResponse);
 
         this.mockMvc.perform(put("/entries/entry")
                 .content(entryActionInput.toString())
