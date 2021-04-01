@@ -23,11 +23,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 /**
  * Defines a {@link Controller}  which defines a set of CRUD Operations.
@@ -136,7 +133,7 @@ public class EntriesController {
 
             if (operationResponse.isSuccessfulOperation()) {
                 // Add the added Entry
-                entryResponse.setEntry(operationResponse.getEntry() );
+                entryResponse.setEntry(operationResponse.getEntry());
                 return new ResponseEntity<>(entryResponse, HttpStatus.OK);
             } else {
                 // Add in error to indicate Entry could not be added successfully.
