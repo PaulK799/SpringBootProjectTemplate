@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -61,6 +62,7 @@ public class EntriesController {
      * @param model       - The {@link Model} to be processed.
      * @return A {@link ResponseEntity} containing an {@link EntryResponse}. If successful an {@link Entry} returned, otherwise an {@link Error}.
      */
+    @PreAuthorize("isAuthenticated()")
     @PostMapping("/entries/entry")
     public ResponseEntity<EntryResponse> addEntry(@RequestBody EntryActionInput actionInput, Model model) {
         EntryResponse entryResponse = new EntryResponse();
@@ -92,6 +94,7 @@ public class EntriesController {
      * @param model       - The {@link Model} to be processed.
      * @return A {@link ResponseEntity} containing an {@link EntryResponse}. If successful an {@link Entry} returned, otherwise an {@link Error}.
      */
+    @PreAuthorize("isAuthenticated()")
     @DeleteMapping("/entries/entry")
     public ResponseEntity<EntryResponse> deleteEntry(@RequestBody EntryActionInput actionInput, Model model) {
         EntryResponse entryResponse = new EntryResponse();
@@ -123,6 +126,7 @@ public class EntriesController {
      * @param model       - The {@link Model} to be processed.
      * @return A {@link ResponseEntity} containing an {@link EntryResponse}. If successful an {@link Entry} returned, otherwise an {@link Error}.
      */
+    @PreAuthorize("isAuthenticated()")
     @PutMapping("/entries/entry")
     public ResponseEntity<EntryResponse> updateEntry(@RequestBody EntryActionInput actionInput, Model model) {
         // Check Conditions.
@@ -158,6 +162,7 @@ public class EntriesController {
      * @param model - The {@link Model} for processing.
      * @return A {@link ResponseEntity} containing an {@link EntryResponse}. If successful an {@link Entry} returned, otherwise an {@link Error}.
      */
+    @PreAuthorize("isAuthenticated()")
     @GetMapping("/entries/entry/{value}/id/{id}")
     public ResponseEntity<EntryResponse> getEntry(@PathVariable String value, @PathVariable String id, Model model) {
         if (value != null && !value.equals(STRING_EMPTY) && id != null && !id.equals(STRING_EMPTY)) {
@@ -189,6 +194,7 @@ public class EntriesController {
      * @param model - The {@link Model} for processing.
      * @return A {@link ResponseEntity} containing an {@link EntriesResponse}. If successful an {@link Entry} returned, otherwise an {@link Error}.
      */
+    @PreAuthorize("isAuthenticated()")
     @GetMapping("/entries")
     public ResponseEntity<EntriesResponse> getEntriesPaging(@RequestParam(required = false) Integer pageNumber,
                                                             @RequestParam(required = false) Integer pageSize, Model model) {

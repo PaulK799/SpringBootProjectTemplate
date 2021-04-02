@@ -25,6 +25,9 @@ public class DemoApplicationConfig {
     @Value("${api.response.default.pageNumber:0}")
     private Integer defaultPageNumber;
 
+    @Value("${api.authentication.token.timelimit.minutes:30}")
+    private Integer defaultTokenTimeLimitInMinutes;
+
     /**
      * Gets the Hostname for the {@link DemoApplicationConfig}.
      *
@@ -68,5 +71,23 @@ public class DemoApplicationConfig {
      */
     public Integer getDefaultPageSize() {
         return defaultPageSize;
+    }
+
+    /**
+     * Gets the defaultTokenTimeLimitInMinutes for the {@link DemoApplicationConfig}.
+     *
+     * @return The an {@link Integer} representing the defaultTokenTimeLimitInMinutes.
+     */
+    public Integer getDefaultTokenTimeLimitInMinutes() {
+        return defaultTokenTimeLimitInMinutes;
+    }
+
+    /**
+     * Gets the defaultTokenTimeLimitInMinutes for the {@link DemoApplicationConfig}.
+     *
+     * @return The an {@link Integer} representing the defaultTokenTimeLimitInMinutes.
+     */
+    public Integer getDefaultTokenTimeLimitInMilliseconds() {
+        return getDefaultTokenTimeLimitInMinutes() * 60 * 1000;
     }
 }
