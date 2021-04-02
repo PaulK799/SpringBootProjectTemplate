@@ -19,6 +19,12 @@ public class DemoApplicationConfig {
     @Value("${spring.redis.password:}")
     private String password;
 
+    @Value("${api.response.default.pageSize:10}")
+    private Integer defaultPageSize;
+
+    @Value("${api.response.default.pageNumber:0}")
+    private Integer defaultPageNumber;
+
     /**
      * Gets the Hostname for the {@link DemoApplicationConfig}.
      *
@@ -44,5 +50,23 @@ public class DemoApplicationConfig {
      */
     public String getPassword() {
         return password;
+    }
+
+    /**
+     * Gets the Default PageNumber for the {@link DemoApplicationConfig}.
+     *
+     * @return The an {@link Integer} representing the pageNumber..
+     */
+    public Integer getDefaultPageNumber() {
+        return defaultPageNumber;
+    }
+
+    /**
+     * Gets the Default PageNumber for the {@link DemoApplicationConfig}.
+     *
+     * @return The an {@link Integer} representing the pageNumber..
+     */
+    public Integer getDefaultPageSize() {
+        return defaultPageSize;
     }
 }

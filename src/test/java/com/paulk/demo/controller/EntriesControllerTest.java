@@ -1,5 +1,6 @@
 package com.paulk.demo.controller;
 
+import com.paulk.demo.config.DemoApplicationConfig;
 import com.paulk.demo.domain.input.EntryActionInput;
 import com.paulk.demo.domain.model.EntriesResponse;
 import com.paulk.demo.domain.model.Entry;
@@ -12,15 +13,12 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
-import org.mockito.internal.util.collections.Sets;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-
-import java.util.HashSet;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
@@ -41,6 +39,9 @@ public class EntriesControllerTest {
     @Mock
     private EntryActionService actionService;
 
+    @Mock
+    private DemoApplicationConfig demoApplicationConfig;
+
     @InjectMocks
     private EntriesController entriesController;
 
@@ -60,6 +61,9 @@ public class EntriesControllerTest {
                 .withKey("test")
                 .withEntry(entry)
                 .build();
+
+        Mockito.when(demoApplicationConfig.getDefaultPageNumber()).thenReturn(0);
+        Mockito.when(demoApplicationConfig.getDefaultPageNumber()).thenReturn(10);
     }
 
     /**

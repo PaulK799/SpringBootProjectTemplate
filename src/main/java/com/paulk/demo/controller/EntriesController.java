@@ -1,6 +1,7 @@
 package com.paulk.demo.controller;
 
 import com.paulk.demo.comparator.EntryComparator;
+import com.paulk.demo.config.DemoApplicationConfig;
 import com.paulk.demo.constants.ErrorCodes;
 import com.paulk.demo.domain.input.EntryActionInput;
 import com.paulk.demo.domain.model.EntriesResponse;
@@ -38,6 +39,9 @@ public class EntriesController {
 
     @Autowired
     protected EntryActionService entryActionService;
+
+    @Autowired
+    protected DemoApplicationConfig demoApplicationConfig;
 
 
     /**
@@ -197,17 +201,16 @@ public class EntriesController {
         } else {
             // Default Page Number
             if (pageNumber == null) {
-                pageNumber = 0;
+                pageNumber = demoApplicationConfig.getDefaultPageNumber();
             }
 
             // Default pageSize.
             if (pageSize == null) {
-                pageSize = 10;
+                pageSize = demoApplicationConfig.getDefaultPageSize();
             }
 
             entriesResponse = entryActionService.getAllEntries(pageNumber, pageSize);
         }
-
 
         // Sort with Comparator.
         entries.sort(new EntryComparator());
