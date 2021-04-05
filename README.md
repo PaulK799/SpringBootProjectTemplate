@@ -10,6 +10,7 @@ The following setup has been implemented as part of the project:
 * Basic RESTFul API implemented using basic `GET`, `POST`, `PUT` and `DELETE`operations for manipulating an `Entry` in a
   data store.
 * Queue consumer service for processing queued messages via `RabitMQ`.
+* Request Authentication with JWT tokens implemented via Spring Security.
 
 ---
 
@@ -88,6 +89,21 @@ spring.rabbitmq.password=guest
 
 ---
 
+# Development MySql Server Setup Docker Instance installation
+
+The ` SpringBootTemplate` has integrated with `MySQL` using `Spring Data JPA` and ` Hibernate` to facilitate message
+authentication via `Spring Security` . If you do not have access to an existing `MySQL` server, please follow the steps
+s below for getting started quickly.
+
+For development purposes, this can be rapidly setup by utilizing `Docker` to setup the `MySQL` container.
+
+```shell
+> docker pull mysql
+> docker run -it  -v ./mysql:/var/lib/mysql -e MYSQL_PASSWORD=password -e MYSQL_ROOT_PASSWORD=password -e MYSQL_DATABASE=db -e MYSQL_USER=user --name=local-mysql --publish 3306:3306 --hostname=mysql --network=spring-template-network --restart=on-failure --detach mysql
+```
+
+---
+
 # Dockerize the EntryAPI into a Docker Container
 
 ## Create Docker Image of EntryAPI
@@ -155,6 +171,102 @@ the `Spring Boot Project Template`.
 
 ---
 
+## Create User
+
+The add `User` operation is supported by the following Restful CRUD operation:
+> POST /authentication/user
+
+### Request
+
+Request Body - An `UserActionInput` object:
+
+```json
+{
+  "user": {
+    "username": "admin",
+    "password": "admin",
+    "role": {
+      "name": "ADMIN"
+    }
+  }
+}
+```
+
+Sample Request:
+
+```shell
+curl --location --request POST 'http://localhost:8080/authentication/user' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+    "user": {
+        "username": "admin",
+        "password": "admin",
+        "role": {
+            "name": "ADMIN"
+        }
+    }
+}'
+```
+
+### Response
+
+The following response structure is expected for the add `User` operation.
+
+```json5
+{
+  "user": {
+    "username": "admin",
+    "password": "*********************",
+    "role": {
+      "name": "ADMIN"
+    },
+    "enabled": true,
+    "authorities": [
+      {
+        "authority": "ADMIN"
+      }
+    ],
+    "credentialsNonExpired": true,
+    "accountNonExpired": true,
+    "accountNonLocked": true
+  },
+  "error": null
+}
+```
+
+## Login
+
+The `Login` operation is supported by the following Restful CRUD operation:
+> POST /authentication/user
+
+### Request
+
+Form Data username: admin password: admin
+
+Sample Request:
+
+```shell
+curl --location --request POST 'http://localhost:8080/login' \
+--form 'username="admin"' \
+--form 'password="admin"'
+```
+
+### Response
+
+The following response structure is expected for the add `User` operation.
+
+```json5
+{
+  "Username": "admin",
+  "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJhdXRob3JpdGllcyI6WyJBRE1JTiJdLCJzdWIiOiJhZG1pbiIsImV4cCI6MTYxNzYyODUwOH0.S8W3SolEZELj6yhcE2bPLyA9dCkRO-vAAkAqgh5nqmAeIY5ecOCeNNJXXm0fN2_U7EbNk9SQKci8pyRVTT0tIA"
+}
+```
+
+The response `Token` from the `Login` operation must be used as a `Authorization: Bearer Access Token` for subsequent
+API calls.
+
+---
+
 ## Add Entry
 
 The add `Entry` operation is supported by the following Restful CRUD operation:
@@ -176,10 +288,12 @@ Sample Request:
 
 ```shell
 curl --location --request POST 'http://localhost:8080/entries/entry' \
+--header 'Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJhdXRob3JpdGllcyI6WyJBRE1JTiJdLCJzdWIiOiJhZG1pbiIsImV4cCI6MTYxNzYyODgzOX0.CDmn-xVclOZmNeMsI53YZG0rhUCLD3pu92DTAum8lv158mwcn8EJS28vqjIUPgby9Cw3cM7-d9433SA_VZ3uJA' \
 --header 'Content-Type: application/json' \
+--header 'Cookie: JSESSIONID=7D0FAAFB783BCF9D1A6945702DD75F5E' \
 --data-raw '{
     "entry": {
-        "value":"Rabbit Test"
+        "value":"George Harrison"
     }
 }'
 ```
@@ -274,11 +388,13 @@ Sample Request:
 
 ```shell
 curl --location --request DELETE 'http://localhost:8080/entries/entry' \
+--header 'Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJhdXRob3JpdGllcyI6WyJBRE1JTiJdLCJzdWIiOiJhZG1pbiIsImV4cCI6MTYxNzYyODgzOX0.CDmn-xVclOZmNeMsI53YZG0rhUCLD3pu92DTAum8lv158mwcn8EJS28vqjIUPgby9Cw3cM7-d9433SA_VZ3uJA' \
 --header 'Content-Type: application/json' \
+--header 'Cookie: JSESSIONID=7D0FAAFB783BCF9D1A6945702DD75F5E' \
 --data-raw '{
     "entry": {
-        "id": "5de624fb-cb76-41d4-ba24-070d7b87f6f2",
-            "value": "Rabbit Test"
+        "id": "ddabce27-f6a7-4860-8111-5728b5f4c915",
+        "value": "John Lennon"
     },
     "error": null
 }'
@@ -367,7 +483,7 @@ Request Body - An `EntryActionInput` object:
 
 ```json
 {
-  "key":"Ringo Star",
+  "key": "Ringo Star",
   "entry": {
     "id": "47f268bd-0d95-480b-8261-bb436e6ed96c",
     "value": "Ringo Star"
@@ -379,12 +495,14 @@ Sample Request:
 
 ```shell
 curl --location --request PUT 'http://localhost:8080/entries/entry' \
+--header 'Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJhdXRob3JpdGllcyI6WyJBRE1JTiJdLCJzdWIiOiJhZG1pbiIsImV4cCI6MTYxNzYyODgzOX0.CDmn-xVclOZmNeMsI53YZG0rhUCLD3pu92DTAum8lv158mwcn8EJS28vqjIUPgby9Cw3cM7-d9433SA_VZ3uJA' \
 --header 'Content-Type: application/json' \
+--header 'Cookie: JSESSIONID=7D0FAAFB783BCF9D1A6945702DD75F5E' \
 --data-raw '{
     "key":"Ringo Star",
     "entry": {
-        "id": "47f268bd-0d95-480b-8261-bb436e6ed96c",
-        "value": "Ringo Star"
+        "id": "aab81683-ce86-4954-9207-6094a1d82e7f",
+            "value": "Ringo Starr"
     }
 }'
 ```
@@ -471,7 +589,9 @@ The get `Entry` operation is supported by the following Restful CRUD operation:
 Sample Request:
 
 ```shell
-curl --location --request GET 'http://localhost:8080/entries/entry/Ringo Star/id/47f268bd-0d95-480b-8261-bb436e6ed96c'
+curl --location --request GET 'http://localhost:8080/entries/entry/John Lennon/id/f58b43d9-e3f2-47eb-a86d-cd02a3d363d5' \
+--header 'Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJhdXRob3JpdGllcyI6WyJBRE1JTiJdLCJzdWIiOiJhZG1pbiIsImV4cCI6MTYxNzYyODgzOX0.CDmn-xVclOZmNeMsI53YZG0rhUCLD3pu92DTAum8lv158mwcn8EJS28vqjIUPgby9Cw3cM7-d9433SA_VZ3uJA' \
+--header 'Cookie: JSESSIONID=7D0FAAFB783BCF9D1A6945702DD75F5E'
 ```
 
 ### Response
@@ -556,7 +676,9 @@ The get all `Entry` operation is supported by the following Restful CRUD operati
 Sample Request:
 
 ```shell
-curl --location --request GET 'http://localhost:8080/entries'
+curl --location --request GET 'http://localhost:8080/entries' \
+--header 'Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJhdXRob3JpdGllcyI6WyJBRE1JTiJdLCJzdWIiOiJhZG1pbiIsImV4cCI6MTYxNzYyODgzOX0.CDmn-xVclOZmNeMsI53YZG0rhUCLD3pu92DTAum8lv158mwcn8EJS28vqjIUPgby9Cw3cM7-d9433SA_VZ3uJA' \
+--header 'Cookie: JSESSIONID=7D0FAAFB783BCF9D1A6945702DD75F5E'
 ```
 
 ### Response
