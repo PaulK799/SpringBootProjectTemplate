@@ -219,7 +219,7 @@ public class EntriesController {
         }
 
         // Sort with Comparator.
-        entries.sort(new EntryComparator());
+        entriesResponse.getEntries().sort(new EntryComparator());
 
         if (!entriesResponse.getEntries().isEmpty()) {
             return new ResponseEntity<>(entriesResponse, HttpStatus.OK);
