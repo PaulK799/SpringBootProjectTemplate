@@ -201,7 +201,6 @@ public class EntriesController {
         // Setup
         EntriesResponse entriesResponse = new EntriesResponse();
         model.addAttribute(ENTRY_RESPONSE_ATTRIBUTE, entriesResponse);
-        List<Entry> entries = entriesResponse.getEntries();
         if (pageNumber == null && pageSize == null) {
             entriesResponse = entryActionService.getAllEntries();
         } else {
