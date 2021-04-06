@@ -183,7 +183,7 @@ public class EntryDataStoreOperationsService implements DataStoreOperations<Stri
     @Override
     public EntriesResponse getAll(Integer pageNumber, Integer pageSize) {
         EntriesResponse entriesResponse = new EntriesResponse();
-        Pageable paging = PageRequest.of(pageNumber, pageSize, Sort.by("value"));
+        Pageable paging = PageRequest.of(pageNumber, pageSize);
 
         Page<Entry> pagedResult = entryPagingRepository.findAll(paging);
         if (pagedResult.hasContent()) {
