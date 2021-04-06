@@ -1,5 +1,7 @@
 package com.paulk.demo.domain.model;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.paulk.demo.domain.model.dto.User;
 import com.paulk.demo.utils.StringBuilderUtils;
 import org.springframework.http.HttpStatus;
@@ -11,6 +13,7 @@ import java.util.Objects;
 /**
  * A domain model for representing a {@link User} or {@link Error}.
  */
+@JsonInclude(Include.NON_EMPTY)
 public class UserResponse implements Serializable {
     private static final long serialVersionUID = 8L;
 

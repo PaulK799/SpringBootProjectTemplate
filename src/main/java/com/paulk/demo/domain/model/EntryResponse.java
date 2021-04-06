@@ -1,5 +1,6 @@
 package com.paulk.demo.domain.model;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.paulk.demo.utils.StringBuilderUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -7,6 +8,9 @@ import org.springframework.http.ResponseEntity;
 import java.io.Serializable;
 import java.util.Objects;
 
+import static com.fasterxml.jackson.annotation.JsonInclude.Include;
+
+@JsonInclude(Include.NON_EMPTY)
 public class EntryResponse implements Serializable {
     private static final long serialVersionUID = 2L;
 
