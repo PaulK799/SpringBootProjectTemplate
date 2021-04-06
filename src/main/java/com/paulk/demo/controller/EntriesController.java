@@ -217,10 +217,9 @@ public class EntriesController {
             entriesResponse = entryActionService.getAllEntries(pageNumber, pageSize);
         }
 
-        // Sort with Comparator.
-        entriesResponse.getEntries().sort(new EntryComparator());
-
         if (!entriesResponse.getEntries().isEmpty()) {
+            // Sort with Comparator.
+            entriesResponse.getEntries().sort(new EntryComparator());
             return new ResponseEntity<>(entriesResponse, HttpStatus.OK);
         } else {
             return EntriesResponse.generateEntryResponseError(ErrorCodes.NOT_FOUND, ErrorCodes.NOT_FOUND_DESCRIPTION, HttpStatus.NOT_FOUND);
