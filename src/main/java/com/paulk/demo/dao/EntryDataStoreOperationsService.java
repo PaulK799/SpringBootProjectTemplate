@@ -45,7 +45,6 @@ public class EntryDataStoreOperationsService implements DataStoreOperations<Stri
      */
     @Override
     public EntryOperationResponse add(Entry entry) {
-        LOGGER.debug("Start Debugging (Add Entry) ---- ");
         EntryOperationResponse entryActionResponse = new EntryOperationResponse();
         EntryOperationResponse getOperationResponse = get(entry);
         if (!getOperationResponse.isSuccessfulOperation()) {
@@ -62,7 +61,6 @@ public class EntryDataStoreOperationsService implements DataStoreOperations<Stri
                 LOGGER.error("Error saving Entry during the Add Operation.");
             }
         }
-        LOGGER.debug("End Debugging (Add Entry) ---- ");
         return entryActionResponse;
     }
 
@@ -74,7 +72,6 @@ public class EntryDataStoreOperationsService implements DataStoreOperations<Stri
      */
     @Override
     public EntryOperationResponse delete(Entry entry) {
-        LOGGER.debug("Start Debugging (Delete Entry) ---- ");
         EntryOperationResponse entryActionResponse = new EntryOperationResponse();
         EntryOperationResponse getOperationResponse = get(entry);
         if (getOperationResponse.isSuccessfulOperation() && getOperationResponse.getEntry().getId().equals(entry.getId())) {
@@ -93,7 +90,6 @@ public class EntryDataStoreOperationsService implements DataStoreOperations<Stri
                 LOGGER.error("Error deleting Entry during the Delete Operation.");
             }
         }
-        LOGGER.debug("End Debugging (Delete Entry) ---- ");
         return entryActionResponse;
     }
 
@@ -105,7 +101,6 @@ public class EntryDataStoreOperationsService implements DataStoreOperations<Stri
      */
     @Override
     public EntryOperationResponse update(String key, Entry entry) {
-        LOGGER.debug("Start Debugging (Update Entry) ---- ");
         EntryOperationResponse entryActionResponse = new EntryOperationResponse();
         Entry searchEntry = new Entry(key, entry.getId());
         EntryOperationResponse getOperationResponse = get(searchEntry);
@@ -136,7 +131,6 @@ public class EntryDataStoreOperationsService implements DataStoreOperations<Stri
                 LOGGER.error("Error saving Entry during the Update Operation.");
             }
         }
-        LOGGER.debug("End Debugging (Update Entry) ---- ");
         return entryActionResponse;
     }
 
@@ -148,7 +142,6 @@ public class EntryDataStoreOperationsService implements DataStoreOperations<Stri
      */
     @Override
     public EntryOperationResponse get(Entry entry) {
-        LOGGER.debug("Start Debugging (Find Entry) ---- ");
         EntryOperationResponse entryActionResponse = new EntryOperationResponse();
         Optional<String> valueOptional = Optional.ofNullable(entry)
                 .map(Entry::getValue);
@@ -169,7 +162,6 @@ public class EntryDataStoreOperationsService implements DataStoreOperations<Stri
      */
     @Override
     public EntriesResponse getAll() {
-        LOGGER.debug("Start Debugging (Find All Entry) ---- ");
         EntriesResponse entriesResponse = new EntriesResponse();
         List<Entry> entries = new ArrayList<>();
         Iterable<Entry> entryIterable = entryRepository.findAll();
@@ -178,7 +170,6 @@ public class EntryDataStoreOperationsService implements DataStoreOperations<Stri
         }
         entriesResponse.setTotalEntries(entries.size());
         entriesResponse.getEntries().addAll(entries);
-        LOGGER.debug("End Debugging (Find All Entry) ---- ");
         return entriesResponse;
     }
 
@@ -191,7 +182,6 @@ public class EntryDataStoreOperationsService implements DataStoreOperations<Stri
      */
     @Override
     public EntriesResponse getAll(Integer pageNumber, Integer pageSize) {
-        LOGGER.debug("Start Debugging (Find All Paged Entry) ---- ");
         EntriesResponse entriesResponse = new EntriesResponse();
         Pageable paging = PageRequest.of(pageNumber, pageSize, Sort.by("value"));
 
@@ -201,7 +191,6 @@ public class EntryDataStoreOperationsService implements DataStoreOperations<Stri
             entriesResponse.setTotalEntries(pagedResult.getTotalElements());
             entriesResponse.setTotalPages(pagedResult.getTotalPages());
         }
-        LOGGER.debug("End Debugging (Find All Paged Entry) ---- ");
         return entriesResponse;
     }
 }
