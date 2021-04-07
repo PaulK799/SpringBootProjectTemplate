@@ -60,7 +60,6 @@ public class UserOperationService implements UserDetailsService {
      * @return The {@link UserOperationResponse} indicating if the operation was successful.
      */
     public UserOperationResponse createUser(User user) {
-        LOGGER.debug("Start Debugging (Create User) ---- ");
         UserOperationResponse createUserOperationResponse = new UserOperationResponse();
         UserOperationResponse getOperationResponse = get(user);
         if (!getOperationResponse.isSuccessfulOperation()) {
@@ -78,7 +77,6 @@ public class UserOperationService implements UserDetailsService {
                 LOGGER.error("Role could not be resolved.");
             }
         }
-        LOGGER.debug("End Debugging (Create User) ---- ");
         return createUserOperationResponse;
     }
 
@@ -89,7 +87,6 @@ public class UserOperationService implements UserDetailsService {
      * @return A {@link UserOperationResponse} with a boolean indicating if response returned was successful.
      */
     public UserOperationResponse get(User user) {
-        LOGGER.debug("Start Debugging (Find User) ---- ");
         UserOperationResponse userOperationResponse = new UserOperationResponse();
         Optional<String> valueOptional = Optional.ofNullable(user)
                 .map(User::getUsername);
@@ -114,7 +111,6 @@ public class UserOperationService implements UserDetailsService {
      * @return A {@link Role} retrieved from the database.
      */
     public Role get(Role role) {
-        LOGGER.debug("Start Debugging (Find Role) ---- ");
         Optional<String> nameOptional = Optional.ofNullable(role)
                 .map(Role::getName);
         if (nameOptional.isPresent()) {
