@@ -1,6 +1,6 @@
 package com.paulk.demo.service;
 
-import com.paulk.demo.domain.input.EntryActionInput;
+import com.paulk.demo.model.EntryActionInput;
 import com.paulk.demo.utils.ObjectMapperInstance;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

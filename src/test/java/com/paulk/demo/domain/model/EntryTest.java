@@ -1,5 +1,6 @@
 package com.paulk.demo.domain.model;
 
+import com.paulk.demo.model.Entry;
 import com.paulk.demo.utils.ObjectMapperInstance;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;

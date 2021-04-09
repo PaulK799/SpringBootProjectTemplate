@@ -1,11 +1,11 @@
 package com.paulk.demo.dao;
 
 import com.paulk.demo.constants.AuditActionCodes;
-import com.paulk.demo.domain.model.Audit;
-import com.paulk.demo.domain.model.Audits;
-import com.paulk.demo.domain.model.EntriesResponse;
-import com.paulk.demo.domain.model.Entry;
-import com.paulk.demo.domain.model.EntryOperationResponse;
+import com.paulk.demo.model.Audit;
+import com.paulk.demo.model.Audits;
+import com.paulk.demo.model.EntriesResponse;
+import com.paulk.demo.model.Entry;
+import com.paulk.demo.model.EntryOperationResponse;
 import com.paulk.demo.repository.EntryPagingRepository;
 import com.paulk.demo.repository.EntryRepository;
 import org.slf4j.Logger;
@@ -14,7 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Component;
 

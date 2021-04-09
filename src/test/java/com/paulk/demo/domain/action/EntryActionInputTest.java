@@ -1,8 +1,7 @@
 package com.paulk.demo.domain.action;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.paulk.demo.domain.input.EntryActionInput;
-import com.paulk.demo.domain.model.Entry;
+import com.paulk.demo.model.EntryActionInput;
+import com.paulk.demo.model.Entry;
 import com.paulk.demo.utils.ObjectMapperInstance;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;

@@ -13,7 +13,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 @EnableDiscoveryClient
 @EnableWebSecurity
 @EnableConfigurationProperties
-@EntityScan(basePackages = {"com.paulk.demo.domain.model.dto"})
+@EntityScan(basePackages = {"com.paulk.demo.model"})
 @SpringBootApplication
 @ComponentScan
 public class DemoApplication {

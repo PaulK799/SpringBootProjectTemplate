@@ -1,10 +1,10 @@
 package com.paulk.demo.service;
 
 import com.paulk.demo.dao.EntryDataStoreOperationsService;
-import com.paulk.demo.domain.input.EntryActionInput;
-import com.paulk.demo.domain.model.EntriesResponse;
-import com.paulk.demo.domain.model.Entry;
-import com.paulk.demo.domain.model.EntryOperationResponse;
+import com.paulk.demo.model.EntryActionInput;
+import com.paulk.demo.model.EntriesResponse;
+import com.paulk.demo.model.Entry;
+import com.paulk.demo.model.EntryOperationResponse;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

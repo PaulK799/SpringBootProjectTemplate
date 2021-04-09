@@ -1,6 +1,6 @@
 package com.paulk.demo.constants;
 
-import com.paulk.demo.domain.model.Error;
+import com.paulk.demo.model.Error;
 
 /**
  * A class of static constant {@link ErrorCodes} for the {@link Error}.

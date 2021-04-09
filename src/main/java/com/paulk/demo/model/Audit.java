@@ -1,4 +1,4 @@
-package com.paulk.demo.domain.model;
+package com.paulk.demo.model;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;

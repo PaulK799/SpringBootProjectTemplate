@@ -1,7 +1,7 @@
 package com.paulk.demo.comparator;
 
-import com.paulk.demo.domain.model.Audit;
-import com.paulk.demo.domain.model.Entry;
+import com.paulk.demo.model.Audit;
+import com.paulk.demo.model.Entry;
 
 import java.time.LocalDateTime;
 import java.util.Comparator;

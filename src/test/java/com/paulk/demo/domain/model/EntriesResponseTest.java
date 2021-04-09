@@ -1,6 +1,9 @@
 package com.paulk.demo.domain.model;
 
 import com.paulk.demo.constants.ErrorCodes;
+import com.paulk.demo.model.EntriesResponse;
+import com.paulk.demo.model.Entry;
+import com.paulk.demo.model.Error;
 import com.paulk.demo.utils.ObjectMapperInstance;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;

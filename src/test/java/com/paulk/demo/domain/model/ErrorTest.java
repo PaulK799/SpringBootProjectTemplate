@@ -1,6 +1,7 @@
 package com.paulk.demo.domain.model;
 
 import com.paulk.demo.constants.ErrorCodes;
+import com.paulk.demo.model.Error;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

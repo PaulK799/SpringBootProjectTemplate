@@ -1,8 +1,8 @@
 package com.paulk.demo.dao;
 
-import com.paulk.demo.domain.model.UserOperationResponse;
-import com.paulk.demo.domain.model.dto.Role;
-import com.paulk.demo.domain.model.dto.User;
+import com.paulk.demo.model.UserOperationResponse;
+import com.paulk.demo.model.Role;
+import com.paulk.demo.model.User;
 import com.paulk.demo.repository.RoleRepository;
 import com.paulk.demo.repository.UserRepository;
 import org.slf4j.Logger;

@@ -1,4 +1,4 @@
-package com.paulk.demo.domain.model.dto;
+package com.paulk.demo.model;
 
 import com.paulk.demo.utils.StringBuilderUtils;
 

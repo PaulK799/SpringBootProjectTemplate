@@ -1,6 +1,6 @@
 package com.paulk.demo.repository;
 
-import com.paulk.demo.domain.model.dto.User;
+import com.paulk.demo.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import javax.persistence.Entity;

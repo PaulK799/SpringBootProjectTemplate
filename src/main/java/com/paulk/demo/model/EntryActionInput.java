@@ -1,6 +1,5 @@
-package com.paulk.demo.domain.input;
+package com.paulk.demo.model;
 
-import com.paulk.demo.domain.model.Entry;
 import com.paulk.demo.utils.StringBuilderUtils;
 
 import java.io.Serializable;

@@ -2,10 +2,10 @@ package com.paulk.demo.service;
 
 import com.paulk.demo.dao.DataStoreOperations;
 import com.paulk.demo.dao.EntryDataStoreOperationsService;
-import com.paulk.demo.domain.input.EntryActionInput;
-import com.paulk.demo.domain.model.EntriesResponse;
-import com.paulk.demo.domain.model.Entry;
-import com.paulk.demo.domain.model.EntryOperationResponse;
+import com.paulk.demo.model.EntryActionInput;
+import com.paulk.demo.model.EntriesResponse;
+import com.paulk.demo.model.Entry;
+import com.paulk.demo.model.EntryOperationResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CacheEvict;

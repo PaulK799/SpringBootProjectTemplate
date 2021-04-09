@@ -1,6 +1,6 @@
 package com.paulk.demo.repository;
 
-import com.paulk.demo.domain.model.Entry;
+import com.paulk.demo.model.Entry;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
 

@@ -1,4 +1,4 @@
-package com.paulk.demo.domain.model;
+package com.paulk.demo.model;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;

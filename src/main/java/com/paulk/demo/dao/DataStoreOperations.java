@@ -1,8 +1,8 @@
 package com.paulk.demo.dao;
 
-import com.paulk.demo.domain.model.EntriesResponse;
-import com.paulk.demo.domain.model.Entry;
-import com.paulk.demo.domain.model.EntryOperationResponse;
+import com.paulk.demo.model.EntriesResponse;
+import com.paulk.demo.model.Entry;
+import com.paulk.demo.model.EntryOperationResponse;
 
 import java.util.Collection;
 import java.util.List;

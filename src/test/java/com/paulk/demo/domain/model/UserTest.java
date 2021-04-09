@@ -1,7 +1,7 @@
 package com.paulk.demo.domain.model;
 
-import com.paulk.demo.domain.model.dto.Role;
-import com.paulk.demo.domain.model.dto.User;
+import com.paulk.demo.model.Role;
+import com.paulk.demo.model.User;
 import com.paulk.demo.utils.ObjectMapperInstance;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
