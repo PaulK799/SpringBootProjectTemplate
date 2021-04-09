@@ -1,6 +1,6 @@
 package com.paulk.demo.controller;
 
-import com.paulk.demo.comparator.EntryComparator;
+import com.paulk.demo.utils.EntryComparator;
 import com.paulk.demo.config.DemoApplicationConfig;
 import com.paulk.demo.constants.ErrorCodes;
 import com.paulk.demo.model.EntryActionInput;

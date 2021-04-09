@@ -1,4 +1,4 @@
-package com.paulk.demo.comparator;
+package com.paulk.demo.utils;
 
 import com.paulk.demo.model.Audit;
 import com.paulk.demo.model.Entry;
